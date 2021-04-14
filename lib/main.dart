@@ -12,5 +12,5 @@ void main() {
         body: Center(child: Image(image: AssetImage('images/GG.jpg'))),
       ),
     ),
-  );
+  );    //End of code
 }
