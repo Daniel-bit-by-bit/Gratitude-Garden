@@ -398,3 +398,100 @@ class _SettingsState extends State<Settings> {
   }
 }
 
+class createAccount extends StatefulWidget {
+  @override
+  _createAccountState createState() => _createAccountState();
+}
+
+class _createAccountState extends State<createAccount> {
+  @override
+  Widget build(BuildContext context) {
+    double width=MediaQuery.of(context).size.width;
+    double height=MediaQuery.of(context).size.height;
+    return Scaffold(
+        body: Container(
+          height: height,
+          width: width,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children:[
+                AppBar(
+                  title: Center(child: Text('Gratitude Garden')),
+                ),
+                Container(
+                    width: width,
+                    height: height*0.25,
+                    child: Image(image: AssetImage('images/GG.jpg'))
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text('Create Account', style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 30.0,),
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Name',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 30.0,),
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Email',
+                    suffixIcon: Icon(Icons.email),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 30.0,),
+                TextField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    hintText: 'Password',
+                    suffixIcon: Icon(Icons.visibility_off),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 30.0,),
+                Padding(
+                  padding: const EdgeInsets.all (5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        child: Text('Create Account'),
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Garden()));
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20.0),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Second()));
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+    );
+  }
+}
+
+
+
+
