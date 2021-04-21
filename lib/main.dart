@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -235,13 +236,13 @@ class _SecondState extends State<Second> {
 }
 
 
-
 class Garden extends StatefulWidget {
   @override
   _GardenState createState() => _GardenState();
 }
-
 class _GardenState extends State<Garden> {
+  List<Widget> pages = <Widget> [GardenPage(), FriendsPage()];
+  int navIndex = 0;
   @override
   Widget build (BuildContext context) {
     return MaterialApp(
@@ -287,22 +288,38 @@ class _GardenState extends State<Garden> {
           backgroundColor: Colors.blue,
           unselectedItemColor: Colors.blue[900],
           fixedColor: Colors.white,
-          currentIndex: 0,
+          currentIndex: navIndex,
+          onTap: (_index) {
+            setState(() {
+              navIndex = _index;
+            });
+          },
           items: const <BottomNavigationBarItem> [
             BottomNavigationBarItem(icon: Icon(Icons.apps), label: 'Garden',),
             BottomNavigationBarItem(icon: Icon(Icons.supervised_user_circle), label: 'Friends',),
           ],
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _BuildPlantColumn('Plants 1-3', 'images/plant01.png', 'images/plant02.png', ''),
-            _BuildPlantColumn('Plants 4-6', '', '', ''),
-            _BuildPlantColumn('Plants 7-9', '', '', ''),
-            _BuildPlantColumn('El Big Boi\'s', '', '', ''),
-          ],
-        ),
+        body: pages[navIndex],
       ) ,
+    );
+  }
+}
+
+Widget GardenPage() {
+  // Builder widgets
+  RawMaterialButton _BuildPlantButton(String plant) {
+    return RawMaterialButton(
+      child: Container(
+        width: 100, height: 250,
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          image: plant  == '' ? null : DecorationImage(image: AssetImage(plant), fit: BoxFit.fitHeight,
+          ),
+        ),
+      ),
+      onPressed: () {
+        //Navigator.push(context, MaterialPageRoute(builder: (context) => Plant(int selectedIndex)));
+      } ,
     );
   }
   Column _BuildPlantColumn(String label, String plant1, String plant2, String plant3, ) {
@@ -329,38 +346,36 @@ class _GardenState extends State<Garden> {
         ),
         Container(
           height: 15,
-          color: Colors.yellow[600],
+          color: Color.fromRGBO(239, 213, 126, 1),
         ),
         Container(
           height: 5,
-          color: Colors.orange[300],
+          color: Color.fromRGBO(227, 181, 87, 1),
         ),
       ],
     );
   }
-
-  RawMaterialButton _BuildPlantButton(String plant) {
-    return RawMaterialButton(
-      child: Container(
-        width: 100, height: 250,
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          image: plant  == '' ? null : DecorationImage(image: AssetImage(plant), fit: BoxFit.fitHeight,
-          ),
-        ),
-      ),
-      onPressed: () {
-        //Navigator.push(context, MaterialPageRoute(builder: (context) => Plant(int selectedIndex)));
-      } ,
-    );
-  }
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      _BuildPlantColumn('Plants 1-3', 'images/plant01.png', 'images/plant02.png', ''),
+      _BuildPlantColumn('Plants 4-6', '', '', ''),
+      _BuildPlantColumn('Plants 7-9', '', '', ''),
+      _BuildPlantColumn('El Big Boi\'s', '', '', ''),
+    ],
+  );
+}
+Widget FriendsPage() {
+  // Builder widgets
+  return Container(
+    child: Text('Friends Page'),
+  );
 }
 
 class Settings extends StatefulWidget {
   @override
   _SettingsState createState() => _SettingsState();
 }
-
 class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
@@ -371,7 +386,9 @@ class _SettingsState extends State<Settings> {
       body: Column(
         children: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => MyAccountSettings()));
+            },
             child: Container (
               padding: EdgeInsets.only(left: 10, top: 12, right: 10, bottom: 12),
               child: Row(
@@ -382,7 +399,8 @@ class _SettingsState extends State<Settings> {
             ),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacySettings()));},
             child: Container (
               padding: EdgeInsets.only(left: 10, top: 12, right: 10, bottom: 12),
               child: Row(
@@ -398,3 +416,165 @@ class _SettingsState extends State<Settings> {
   }
 }
 
+class MyAccountSettings extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('My Account', style: TextStyle(fontSize: 16),),
+      ),
+      body: Container(
+        padding: EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(image: AssetImage('images/spiderman.png'), fit: BoxFit.cover,)
+                  ),
+                ),
+                TextButton(
+                  child: Text('Change Profile Picture'),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Name', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
+                Text('Peter Parker', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Email', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
+                Text('peterparker@marvelmail.com', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
+              ],
+            ),
+            SizedBox(height: 20),
+            Container(
+              child: Text('Password', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
+              padding: EdgeInsets.only(bottom: 10),
+              alignment: Alignment.centerLeft,
+            ),
+            Column(
+              children: [
+                Container(
+                  width: 240,
+                  height: 30,
+                  child: TextField(
+                    style: TextStyle(fontSize: 12),
+                    obscureText: true,
+                    autofocus: false,
+                    decoration: InputDecoration(
+                      hintText: 'Current Password',
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 240,
+                  height: 30,
+                  child: TextField(
+                    style: TextStyle(fontSize: 12),
+                    obscureText: true,
+                    autofocus: false,
+                    decoration: InputDecoration(
+                      hintText: 'New Password',
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+enum PrivacyValues { OnlyFriends, Everyone }
+class PrivacySettings extends StatefulWidget {
+  @override
+  _PrivacySettingsState createState() => _PrivacySettingsState();
+}
+class _PrivacySettingsState extends State<PrivacySettings> {
+  PrivacyValues value;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('My Account', style: TextStyle(fontSize: 16),),
+      ),
+      body: Container(
+        alignment: Alignment.topLeft,
+        padding: EdgeInsets.only(left: 30, right: 20, top: 20, bottom: 30),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Receive Plants', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 16)),
+            Container(
+              padding: EdgeInsets.only(left: 24, top: 8),
+              child: Text('Let other users send me plants', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12),),
+            ),
+            Container(
+              alignment: Alignment.topLeft,
+              padding: EdgeInsets.only(left: 24, top: 16, right: 24),
+              child: Column(
+                children: [
+                  Container(
+                  height: 36,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Only Friends', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
+                      Radio<PrivacyValues>(
+                        groupValue: value,
+                        value: PrivacyValues.OnlyFriends,
+                        onChanged: (PrivacyValues _value) {
+                          setState(() {
+                            value = _value;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                  Divider(thickness: 1, height: 1, color: Colors.blue[100], endIndent: 10,),
+                  Container(
+                    height: 36,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Everyone', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
+                        Radio<PrivacyValues>(
+                          groupValue: value,
+                          value: PrivacyValues.Everyone,
+                          onChanged: (PrivacyValues _value) {
+                            setState(() {
+                              value = _value;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(thickness: 1, height: 1, color: Colors.blue[100], endIndent: 10,),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
