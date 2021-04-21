@@ -9,6 +9,7 @@ void main() {
       routes: {
         '/': (context) => StartUp(),
         '/sign_in': (context) => SignIn(),
+        '/create_account': (context) => createAccount(),
       },
     ));
 }
@@ -34,7 +35,9 @@ class StartUp extends StatelessWidget {
             ),
             ElevatedButton(
               child: Text('Create an Account'),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/create_account');
+              },
             )
           ]
       )),
