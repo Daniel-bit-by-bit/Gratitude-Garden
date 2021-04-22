@@ -403,6 +403,7 @@ class createAccount extends StatefulWidget {
   _createAccountState createState() => _createAccountState();
 }
 
+//screen where the user can create an account
 class _createAccountState extends State<createAccount> {
   @override
   Widget build(BuildContext context) {
@@ -421,7 +422,7 @@ class _createAccountState extends State<createAccount> {
                 ),
                 Container(
                     width: width,
-                    height: height*0.25,
+                    height: height*0.30,
                     child: Image(image: AssetImage('images/GG.jpg'))
                 ),
                 Padding(
