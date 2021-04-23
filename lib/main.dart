@@ -45,8 +45,10 @@ class StartUp extends StatelessWidget {
           onPressed: () {
             Navigator.pushNamed(context, '/create_account');
           },
-        )
-      ])),
+         ),
+        ],
+       ),
+      ),
     );
   }
 }
@@ -1071,7 +1073,9 @@ class _AddGratitudeState extends State<AddGratitude> {
            ),
          ElevatedButton(
            child: Text('Submit'),
-           onPressed: () {},
+           onPressed: () {
+             Navigator.pushNamed(context, '/view_gratitude');
+           },
           ),
          ],
        ),
