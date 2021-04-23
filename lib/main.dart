@@ -514,7 +514,7 @@ class _GardenState extends State<Garden> {
                   icon: Icon(Icons.menu),
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Settings()));
+                        MaterialPageRoute(builder: (context) => Settings())).then((value) => setState(() {}));
                   },
                 ),
               ],
