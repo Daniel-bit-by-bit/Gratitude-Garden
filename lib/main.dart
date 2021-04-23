@@ -33,13 +33,21 @@ class StartUp extends StatelessWidget {
       body: Center(
           child: Column(children: <Widget>[
             Image(image: AssetImage('images/GG.jpg')),
-            Text('Planting Gratitude with the Right Attitude',
-            style: TextStyle(fontSize: 20.0)),
+            Container(
+              height: 100,
+              width: 400,
+              color: Colors.green[400],
+              child: Center(
+                child: Text('Planting Gratitude with the Right Attitude',
+                    style: TextStyle(fontSize: 20.0, color: Colors.white, fontWeight: FontWeight.bold,),),
+              ),
+            ),
             ElevatedButton(
             child: Text('Sign In'),
             onPressed: () {
               Navigator.pushNamed(context, '/sign_in');
-            }),
+            },
+          ),
         ElevatedButton(
           child: Text('Create an Account'),
           onPressed: () {
