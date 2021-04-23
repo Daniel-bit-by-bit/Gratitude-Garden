@@ -16,8 +16,8 @@ void main() {
       '/sign_in': (context) => SignIn(),
       '/create_account': (context) => createAccount(),
       //'/feed_gratitude': (context) => AddGratitude(),
-      //'view_gratitude': (context) => ViewGratitude(),
-      //'send_a_plant': (context) => SendAPlant(),
+      '/view_gratitude': (context) => ViewGratitude(),
+      //'/send_a_plant': (context) => SendAPlant(),
     },
   ));
 }
@@ -265,18 +265,13 @@ class _PlantPressedState extends State<PlantPressed> {
                   Container(
                     width: 45,
                     height: 45,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: AssetImage('images/spiderman.png'),
-                          fit: BoxFit.cover,
-                        )),
+                    child: user.GetProfilePicture(),
                   ),
                   SizedBox(
                     width: 10,
                   ),
                   Text(
-                    'Peter Parker',
+                    user.name,
                     style: TextStyle(fontSize: 16),
                   ),
                 ],
@@ -305,29 +300,34 @@ class _PlantPressedState extends State<PlantPressed> {
           ),
         ),
 
-        body: Center(
-          //alignment: Alignment.centerRight,
+        body: Container(
+          width: 400,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                SizedBox(height: 20),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Align(alignment: Alignment.topCenter),
                     Container(height: 200, width: 200, child: Image(image: AssetImage('images/plant01.png')),),
                   ],//children-inner
                 ),//row1
+                SizedBox(height: 40),
                 Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children:[
-                      Align(alignment: Alignment.center),
                       Container(
-                          height: 200,
-                          width: 200,
+                        padding: EdgeInsets.only(top: 10, bottom: 10),
+                          height: 180,
+                          width: 220,
                           color: Colors.blue,
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children:[
-                                Container(width: 150, height: 50, color: Colors.lightBlueAccent, child: TextButton(child: Text('Feed Gratitude', style: TextStyle(fontSize: 18, color: Colors.white)), onPressed:() {Navigator.pushNamed(context, '/feed_gratitude');} )),
-                                Container(width: 150, height: 50,  color: Colors.lightBlueAccent,child: TextButton(child: Text('View Gratitude', style: TextStyle(fontSize: 18, color: Colors.white)), onPressed:() {Navigator.pushNamed(context, '/feed_gratitude');} )),
-                                Container(width: 150, height: 50, color: Colors.lightBlueAccent,child: TextButton(child: Text('Send a Plant', style: TextStyle(fontSize: 18, color: Colors.white)), onPressed:() {Navigator.pushNamed(context, '/feed_gratitude');} )),
+                                Container(width: 190, height: 40, color: Colors.lightBlueAccent, child: TextButton(child: Text('Feed Gratitude', style: TextStyle(fontSize: 16, color: Colors.white)), onPressed:() {Navigator.pushNamed(context, '/feed_gratitude');} )),
+                                Container(width: 190, height: 40, color: Colors.lightBlueAccent, child: TextButton(child: Text('View Gratitude', style: TextStyle(fontSize: 16, color: Colors.white)), onPressed:() {Navigator.pushNamed(context, '/view_gratitude');} )),
+                                Container(width: 190, height: 40, color: Colors.lightBlueAccent, child: TextButton(child: Text('Send a Plant',  style: TextStyle(fontSize: 16, color: Colors.white)), onPressed:() {Navigator.pushNamed(context, '/send_a_plant');} )),
                               ]) //children
                       ),
                     ]
@@ -377,6 +377,9 @@ class _createAccountState extends State<createAccount> {
               ),
               SizedBox(height: 30.0,),
               TextField(
+                onChanged: (value) {
+                  user.name = value;
+                },
                 decoration: InputDecoration(
                   hintText: 'Name',
                   border: OutlineInputBorder(
@@ -386,6 +389,9 @@ class _createAccountState extends State<createAccount> {
               ),
               SizedBox(height: 30.0,),
               TextField(
+                onChanged: (value) {
+                  user.email = value;
+                },
                 decoration: InputDecoration(
                   hintText: 'Email',
                   suffixIcon: Icon(Icons.email),
@@ -396,6 +402,9 @@ class _createAccountState extends State<createAccount> {
               ),
               SizedBox(height: 30.0,),
               TextField(
+                onChanged: (value) {
+                  user.password = value;
+                },
                 obscureText: true,
                 decoration: InputDecoration(
                   hintText: 'Password',
@@ -445,7 +454,7 @@ class _createAccountState extends State<createAccount> {
 }
 
 List<Plant> plants = [new Plant('images/plant1-2.png'), new Plant('images/plant1-0.png'), new Plant('images/plant1-3.png')];
-User user = new User('Petor Parker', 'peterparker@marvelmail.com', 'iamspiderman123', plants, [], '', PrivacyValues.OnlyFriends);
+User user = new User('Peter Parker', 'peterparker@marvelmail.com', 'iamspiderman123', plants, [], '', PrivacyValues.OnlyFriends);
 
 class Garden extends StatefulWidget {
   @override
@@ -469,18 +478,13 @@ class _GardenState extends State<Garden> {
                 Container(
                   width: 45,
                   height: 45,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: AssetImage('images/spiderman.png'),
-                        fit: BoxFit.cover,
-                      )),
+                  child: user.GetProfilePicture(),
                 ),
                 SizedBox(
                   width: 10,
                 ),
                 Text(
-                  'Peter Parker',
+                  user.name,
                   style: TextStyle(fontSize: 16),
                 ),
               ],
@@ -775,8 +779,8 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                     ),
                     //onPressed: getImage,
                     onPressed: () {
+                      user.profilePicture = user.profilePicture == '' ? 'images/spiderman.png' : '';
                       setState(() {
-                        user.profilePicture = user.profilePicture == '' ? 'images/spiderman.png' : '';
                       });
                     },
                   ),
