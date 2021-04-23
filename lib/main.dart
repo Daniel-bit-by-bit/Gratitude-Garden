@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 //import 'package:search_widget/search_widget.dart';
+import 'package:gratitude_garden/User.dart';
+import 'package:gratitude_garden/Plant.dart';
 
 void main() {
   runApp(
@@ -240,6 +242,103 @@ class _SecondState extends State<Second> {
 }
 
 
+class createAccount extends StatefulWidget {
+  @override
+  _createAccountState createState() => _createAccountState();
+}
+
+class _createAccountState extends State<createAccount> {
+  @override
+  Widget build(BuildContext context) {
+    double width=MediaQuery.of(context).size.width;
+    double height=MediaQuery.of(context).size.height;
+    return Scaffold(
+      body: Container(
+        height: height,
+        width: width,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children:[
+              AppBar(
+                title: Center(child: Text('Gratitude Garden')),
+              ),
+              Container(
+                  width: width,
+                  height: height*0.30,
+                  child: Image(image: AssetImage('images/GG.jpg'))
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text('Create Account', style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),),
+                  ],
+                ),
+              ),
+              SizedBox(height: 30.0,),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Name',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+              ),
+              SizedBox(height: 30.0,),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Email',
+                  suffixIcon: Icon(Icons.email),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+              ),
+              SizedBox(height: 30.0,),
+              TextField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  hintText: 'Password',
+                  suffixIcon: Icon(Icons.visibility_off),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+              ),
+              SizedBox(height: 30.0,),
+              Padding(
+                padding: const EdgeInsets.all (5.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      child: Text('Create Account'),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Garden()));
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20.0),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Second()));
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+List<Plant> plants = [new Plant('images/plant02.png'), new Plant('images/plant02.png')];
+User user = new User('Petor Parker', 'peterparker@marvelmail.com', 'iamspiderman123', plants, [], '', PrivacyValues.OnlyFriends);
+
 class Garden extends StatefulWidget {
   @override
   _GardenState createState() => _GardenState();
@@ -247,6 +346,7 @@ class Garden extends StatefulWidget {
 class _GardenState extends State<Garden> {
   List<Widget> pages = <Widget> [GardenPage(), FriendsPage()];
   int navIndex = 0;
+
   @override
   Widget build (BuildContext context) {
     return MaterialApp(
@@ -261,13 +361,10 @@ class _GardenState extends State<Garden> {
                     Container(
                       width: 45,
                       height: 45,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(image: AssetImage('images/spiderman.png'), fit: BoxFit.cover,)
-                      ),
+                      child: user.GetProfilePicture(),
                     ),
                     SizedBox(width: 10,),
-                    Text('Peter Parker', style: TextStyle(fontSize: 16),),
+                    Text(user.name, style: TextStyle(fontSize: 16),),
                   ],
                 ),
                 Row(
@@ -279,7 +376,7 @@ class _GardenState extends State<Garden> {
                       splashRadius: 24,
                       icon: Icon(Icons.menu),
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Settings())).then((value) => setState(() {}));
                       },
                     ),
                   ],
@@ -311,22 +408,27 @@ class _GardenState extends State<Garden> {
 
 Widget GardenPage() {
   // Builder widgets
-  RawMaterialButton _BuildPlantButton(String plant) {
-    return RawMaterialButton(
-      child: Container(
-        width: 100, height: 250,
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          image: plant  == '' ? null : DecorationImage(image: AssetImage(plant), fit: BoxFit.fitHeight,
+  Widget _BuildPlantButton(List<Plant> plants, int index) {
+    if(index >= plants.length) {
+        return SizedBox(width: 100, height: 250,);
+    }
+    else {
+      return RawMaterialButton(
+        child: Container(
+          width: 100, height: 250,
+          decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            image: DecorationImage(image: plants[index].GetImage(), fit: BoxFit.fitHeight,
+            ),
           ),
         ),
-      ),
-      onPressed: () {
-        //Navigator.push(context, MaterialPageRoute(builder: (context) => Plant(int selectedIndex)));
-      } ,
-    );
+        onPressed: () {
+          //Navigator.push(context, MaterialPageRoute(builder: (context) => Plant(int selectedIndex)));
+        } ,
+      );
+    }
   }
-  Column _BuildPlantColumn(String label, String plant1, String plant2, String plant3, ) {
+  Column _BuildPlantColumn(String label, int index1, int index2, int index3) {
     return Column (
       children: [
         Container(
@@ -341,9 +443,9 @@ Widget GardenPage() {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _BuildPlantButton(plant1),
-              _BuildPlantButton(plant2),
-              _BuildPlantButton(plant3),
+              _BuildPlantButton(user.plants, index1),
+              _BuildPlantButton(user.plants, index2),
+              _BuildPlantButton(user.plants, index3),
             ],
           ),
           height: 88,
@@ -360,12 +462,13 @@ Widget GardenPage() {
     );
   }
   return Column(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
-      _BuildPlantColumn('Plants 1-3', 'images/plant01.png', 'images/plant02.png', ''),
-      _BuildPlantColumn('Plants 4-6', '', '', ''),
-      _BuildPlantColumn('Plants 7-9', '', '', ''),
-      _BuildPlantColumn('El Big Boi\'s', '', '', ''),
+      _BuildPlantColumn('Plants 1-3', 0, 1, 2),
+      _BuildPlantColumn('Plants 4-6', 3, 4, 5),
+      _BuildPlantColumn('Plants 7-9', 6, 7, 8),
+      _BuildPlantColumn('El Big Boi\'s', 9, 10, 11),
     ],
   );
 }
@@ -458,7 +561,7 @@ class _SettingsState extends State<Settings> {
         children: [
           TextButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => MyAccountSettings()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => MyAccountSettings())).then((value) => setState(() {}));
             },
             child: Container (
               padding: EdgeInsets.only(left: 10, top: 12, right: 10, bottom: 12),
@@ -481,110 +584,33 @@ class _SettingsState extends State<Settings> {
                     Text('Privacy')]),
             ),
           ),
+          TextButton(
+            onPressed: () {
+              Navigator.popUntil(context, ModalRoute.withName('/'));
+            },
+            child: Container (
+              padding: EdgeInsets.only(left: 10, top: 12, right: 10, bottom: 12),
+              child: Row(
+                  children: [
+                    Icon(Icons.logout),
+                    SizedBox(width: 16,),
+                    Text('Log Out')]),
+            ),
+          ),
         ],
       ),
     );
   }
 }
 
-class createAccount extends StatefulWidget {
+class MyAccountSettings extends StatefulWidget {
   @override
-  _createAccountState createState() => _createAccountState();
-}
-
-class _createAccountState extends State<createAccount> {
-  @override
-  Widget build(BuildContext context) {
-    double width=MediaQuery.of(context).size.width;
-    double height=MediaQuery.of(context).size.height;
-    return Scaffold(
-        body: Container(
-          height: height,
-          width: width,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children:[
-                AppBar(
-                  title: Center(child: Text('Gratitude Garden')),
-                ),
-                Container(
-                    width: width,
-                    height: height*0.25,
-                    child: Image(image: AssetImage('images/GG.jpg'))
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text('Create Account', style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 30.0,),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Name',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 30.0,),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Email',
-                    suffixIcon: Icon(Icons.email),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 30.0,),
-                TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                    suffixIcon: Icon(Icons.visibility_off),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 30.0,),
-                Padding(
-                  padding: const EdgeInsets.all (5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ElevatedButton(
-                        child: Text('Create Account'),
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Garden()));
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20.0),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Second()));
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
-    );
-  }
+  _MyAccountSettingsState createState() => _MyAccountSettingsState();
 }
 
 
+class _MyAccountSettingsState extends State<MyAccountSettings> {
 
-
-class MyAccountSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -602,14 +628,15 @@ class MyAccountSettings extends StatelessWidget {
                 Container(
                   width: 100,
                   height: 100,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(image: AssetImage('images/spiderman.png'), fit: BoxFit.cover,)
-                  ),
+                  child: user.GetProfilePicture(),
+
                 ),
                 TextButton(
                   child: Text('Change Profile Picture'),
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      user.profilePicture = user.profilePicture == '' ? 'images/spiderman.png' : '';});
+                  },
                 ),
               ],
             ),
@@ -618,7 +645,7 @@ class MyAccountSettings extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Name', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
-                Text('Peter Parker', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
+                Text(user.name, style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
               ],
             ),
             SizedBox(height: 20),
@@ -626,7 +653,7 @@ class MyAccountSettings extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Email', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
-                Text('peterparker@marvelmail.com', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
+                Text(user.email, style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
               ],
             ),
             SizedBox(height: 20),
@@ -676,7 +703,6 @@ class PrivacySettings extends StatefulWidget {
   _PrivacySettingsState createState() => _PrivacySettingsState();
 }
 class _PrivacySettingsState extends State<PrivacySettings> {
-  PrivacyValues value;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -706,11 +732,11 @@ class _PrivacySettingsState extends State<PrivacySettings> {
                     children: [
                       Text('Only Friends', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
                       Radio<PrivacyValues>(
-                        groupValue: value,
+                        groupValue: user.privacy,
                         value: PrivacyValues.OnlyFriends,
                         onChanged: (PrivacyValues _value) {
                           setState(() {
-                            value = _value;
+                            user.privacy = _value;
                           });
                         },
                       ),
@@ -725,11 +751,11 @@ class _PrivacySettingsState extends State<PrivacySettings> {
                       children: [
                         Text('Everyone', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
                         Radio<PrivacyValues>(
-                          groupValue: value,
+                          groupValue: user.privacy,
                           value: PrivacyValues.Everyone,
                           onChanged: (PrivacyValues _value) {
                             setState(() {
-                              value = _value;
+                              user.privacy = _value;
                             });
                           },
                         ),
