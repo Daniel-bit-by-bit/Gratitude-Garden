@@ -24,7 +24,7 @@ dependencies:
   #search_widget: <latest version>
   flutter:
     sdk: flutter
-
+  image_picker: ^0.7.4
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -51,6 +51,10 @@ flutter:
      - images/spiderman.png
      - images/plant01.png
      - images/plant02.png
+     - images/plant1-0.png
+     - images/plant1-1.png
+     - images/plant1-2.png
+     - images/plant1-3.png
      - images/GwenStacy.jpg
      - images/HarryOsborn.jpg
      - images/MaryJane.jpg

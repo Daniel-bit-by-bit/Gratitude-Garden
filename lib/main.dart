@@ -1,5 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/rendering.dart';
 //import 'package:search_widget/search_widget.dart';
 import 'package:gratitude_garden/User.dart';
@@ -14,8 +16,8 @@ void main() {
       '/sign_in': (context) => SignIn(),
       '/create_account': (context) => createAccount(),
       '/feed_gratitude': (context) => AddGratitude(),
-      //'view_gratitude': (context) => ViewGratitude(),
-      //'send_a_plant': (context) => SendAPlant(),
+      '/view_gratitude': (context) => ViewGratitude(),
+      //'/send_a_plant': (context) => SendAPlant(),
     },
   ));
 }
@@ -89,9 +91,7 @@ class _SignInState extends State<SignIn> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 30.0,
-              ),
+              SizedBox(height: 30.0,),
               TextField(
                 decoration: InputDecoration(
                   hintText: 'Email',
@@ -100,10 +100,8 @@ class _SignInState extends State<SignIn> {
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 30.0,
-              ),
+               ),
+              SizedBox(height: 30.0,),
               TextField(
                 obscureText: true,
                 decoration: InputDecoration(
@@ -112,26 +110,20 @@ class _SignInState extends State<SignIn> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
+                 ),
                 ),
-              ),
-              SizedBox(
-                height: 30.0,
-              ),
+              SizedBox(height: 30.0,),
               Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Forget Password?',
-                      style: TextStyle(fontSize: 12.0),
-                    ),
+                    Text('Forget Password?', style: TextStyle(fontSize: 12.0),),
                     ElevatedButton(
                       child: Text('Login'),
                       onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Garden()));
-                      },
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Garden()));
+                        },
                     ),
                   ],
                 ),
@@ -139,14 +131,15 @@ class _SignInState extends State<SignIn> {
               SizedBox(height: 20.0),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Second()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Second()));
                 },
                 child: Text.rich(
                   TextSpan(
                     text: 'Don\'t have an account? ',
                     children: [
-                      TextSpan(text: 'Sign Up'),
+                      TextSpan(
+                        text: 'Sign Up'
+                      ),
                     ],
                   ),
                 ),
@@ -197,9 +190,7 @@ class _SecondState extends State<Second> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 30.0,
-              ),
+              SizedBox(height: 30.0,),
               TextField(
                 decoration: InputDecoration(
                   hintText: 'Email',
@@ -209,9 +200,7 @@ class _SecondState extends State<Second> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 30.0,
-              ),
+              SizedBox(height: 30.0,),
               TextField(
                 obscureText: true,
                 decoration: InputDecoration(
@@ -222,18 +211,13 @@ class _SecondState extends State<Second> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 30.0,
-              ),
+              SizedBox(height: 30.0,),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Forget Password?',
-                      style: TextStyle(fontSize: 12.0),
-                    ),
+                    Text('Forget Password?', style: TextStyle(fontSize: 12.0),),
                     ElevatedButton(
                       child: Text('Sign Up'),
                       onPressed: () {},
@@ -244,8 +228,7 @@ class _SecondState extends State<Second> {
               SizedBox(height: 20.0),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SignIn()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn()));
                 },
                 child: Text.rich(
                   TextSpan(
@@ -263,7 +246,6 @@ class _SecondState extends State<Second> {
     );
   }
 }
-
 class PlantPressed extends StatefulWidget {
   @override
   _PlantPressedState createState() => _PlantPressedState();
@@ -273,84 +255,84 @@ class _PlantPressedState extends State<PlantPressed> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 45,
-                  height: 45,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: AssetImage('images/spiderman.png'),
-                        fit: BoxFit.cover,
-                      )),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  'Peter Parker',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  'Gratitude Garden',
-                  style: TextStyle(fontSize: 16),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                IconButton(
-                  visualDensity: VisualDensity.compact,
-                  splashRadius: 24,
-                  icon: Icon(Icons.menu),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Settings()));
-                  },
-                )
-              ], //row children 2
-            ),
-          ], //row children1
+      home: Scaffold(
+        appBar: AppBar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 45,
+                    height: 45,
+                    child: user.GetProfilePicture(),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    user.name,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Gratitude Garden',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  IconButton(
+                    visualDensity: VisualDensity.compact,
+                    splashRadius: 24,
+                    icon: Icon(Icons.menu),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Settings()));
+                    },
+                  )
+                ], //row children 2
+              ),
+            ], //row children1
+          ),
         ),
-      ),
 
-      body: Center(
-        //alignment: Alignment.centerRight,
-        child: Column(
-          children: [
-            Row(
+        body: Container(
+          width: 400,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Align(alignment: Alignment.topCenter),
-                Container(height: 200, width: 200, child: Image(image: AssetImage('images/plant01.png')),),
-            ],//children-inner
-          ),//row1
-          Row(
-              children:[
-                Align(alignment: Alignment.center),
-                Container(
-                    height: 200,
-                    width: 200,
-                    color: Colors.blue,
-                      child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children:[
-                              Container(width: 150, height: 50, color: Colors.lightBlueAccent, child: TextButton(child: Text('Feed Gratitude', style: TextStyle(fontSize: 18, color: Colors.white)), onPressed:() {Navigator.pushNamed(context, '/feed_gratitude');} )),
-                              Container(width: 150, height: 50,  color: Colors.lightBlueAccent,child: TextButton(child: Text('View Gratitude', style: TextStyle(fontSize: 18, color: Colors.white)), onPressed:() {Navigator.pushNamed(context, '/feed_gratitude');} )),
-                              Container(width: 150, height: 50, color: Colors.lightBlueAccent,child: TextButton(child: Text('Send a Plant', style: TextStyle(fontSize: 18, color: Colors.white)), onPressed:() {Navigator.pushNamed(context, '/feed_gratitude');} )),
-                          ]) //children
-                ),
-          ]
-          )
-          ]),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Align(alignment: Alignment.topCenter),
+                    Container(height: 200, width: 200, child: Image(image: AssetImage('images/plant01.png')),),
+                  ],//children-inner
+                ),//row1
+                SizedBox(height: 40),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children:[
+                      Container(
+                        padding: EdgeInsets.only(top: 10, bottom: 10),
+                          height: 180,
+                          width: 220,
+                          color: Colors.blue,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children:[
+                                Container(width: 190, height: 40, color: Colors.lightBlueAccent, child: TextButton(child: Text('Feed Gratitude', style: TextStyle(fontSize: 16, color: Colors.white)), onPressed:() {Navigator.pushNamed(context, '/feed_gratitude');} )),
+                                Container(width: 190, height: 40, color: Colors.lightBlueAccent, child: TextButton(child: Text('View Gratitude', style: TextStyle(fontSize: 16, color: Colors.white)), onPressed:() {Navigator.pushNamed(context, '/view_gratitude');} )),
+                                Container(width: 190, height: 40, color: Colors.lightBlueAccent, child: TextButton(child: Text('Send a Plant',  style: TextStyle(fontSize: 16, color: Colors.white)), onPressed:() {Navigator.pushNamed(context, '/send_a_plant');} )),
+                              ]) //children
+                      ),
+                    ]
+                )
+              ]),
         ),//children-outer
       ),
     );
@@ -358,16 +340,132 @@ class _PlantPressedState extends State<PlantPressed> {
 }
 
 
+class createAccount extends StatefulWidget {
+  @override
+  _createAccountState createState() => _createAccountState();
+}
+
+class _createAccountState extends State<createAccount> {
+  @override
+  Widget build(BuildContext context) {
+    double width=MediaQuery.of(context).size.width;
+    double height=MediaQuery.of(context).size.height;
+    return Scaffold(
+      body: Container(
+        height: height,
+        width: width,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children:[
+              AppBar(
+                title: Center(child: Text('Gratitude Garden')),
+              ),
+              Container(
+                  width: width,
+                  height: height*0.30,
+                  child: Image(image: AssetImage('images/GG.jpg'))
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text('Create Account', style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),),
+                  ],
+                ),
+              ),
+              SizedBox(height: 30.0,),
+              TextField(
+                onChanged: (value) {
+                  user.name = value;
+                },
+                decoration: InputDecoration(
+                  hintText: 'Name',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+              ),
+              SizedBox(height: 30.0,),
+              TextField(
+                onChanged: (value) {
+                  user.email = value;
+                },
+                decoration: InputDecoration(
+                  hintText: 'Email',
+                  suffixIcon: Icon(Icons.email),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+              ),
+              SizedBox(height: 30.0,),
+              TextField(
+                onChanged: (value) {
+                  user.password = value;
+                },
+                obscureText: true,
+                decoration: InputDecoration(
+                  hintText: 'Password',
+                  suffixIcon: Icon(Icons.visibility_off),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+              ),
+              SizedBox(height: 30.0,),
+              Padding(
+                padding: const EdgeInsets.all (5.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      child: Text('Create Account'),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Garden()));
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20.0),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn()));
+                },
+                child: Text.rich(
+                  TextSpan(
+                    text: 'Already have an account? ',
+                    children: [
+                      TextSpan(
+                          text: 'Sign In'
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+List<Plant> plants = [new Plant('images/plant1-2.png'), new Plant('images/plant1-0.png'), new Plant('images/plant1-3.png'), new Plant('images/plant1-2.png')];
+User user = new User('Peter Parker', 'peterparker@marvelmail.com', 'iamspiderman123', plants, [], '', PrivacyValues.OnlyFriends);
+
 class Garden extends StatefulWidget {
   @override
   _GardenState createState() => _GardenState();
 }
-
 class _GardenState extends State<Garden> {
+
   int navIndex = 0;
   @override
-  Widget build(BuildContext context) {
-    List<Widget> pages = <Widget>[GardenPage(context), FriendsPage()];
+  Widget build (BuildContext context) {
+    List<Widget> pages = <Widget> [GardenPage(context), FriendsPage()];
     return MaterialApp(
       title: 'My Garden',
       home: Scaffold(
@@ -380,18 +478,13 @@ class _GardenState extends State<Garden> {
                 Container(
                   width: 45,
                   height: 45,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: AssetImage('images/spiderman.png'),
-                        fit: BoxFit.cover,
-                      )),
+                  child: user.GetProfilePicture(),
                 ),
                 SizedBox(
                   width: 10,
                 ),
                 Text(
-                  'Peter Parker',
+                  user.name,
                   style: TextStyle(fontSize: 16),
                 ),
               ],
@@ -430,15 +523,9 @@ class _GardenState extends State<Garden> {
               navIndex = _index;
             });
           },
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.apps),
-              label: 'Garden',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.supervised_user_circle),
-              label: 'Friends',
-            ),
+          items: const <BottomNavigationBarItem> [
+            BottomNavigationBarItem(icon: Icon(Icons.apps), label: 'Garden',),
+            BottomNavigationBarItem(icon: Icon(Icons.supervised_user_circle), label: 'Friends',),
           ],
         ),
         body: pages[navIndex],
@@ -449,46 +536,37 @@ class _GardenState extends State<Garden> {
 
 Widget GardenPage(BuildContext context) {
   // Builder widgets
-  RawMaterialButton _BuildPlantButton(String plant) {
-    return RawMaterialButton(
-      child: Container(
-        width: 100,
-        height: 250,
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          image: plant == ''
-              ? null
-              : DecorationImage(
-                  image: AssetImage(plant),
-                  fit: BoxFit.fitHeight,
-                ),
+  Widget _BuildPlantButton(List<Plant> plants, int index) {
+    if(index >= plants.length) {
+        return SizedBox(width: 100, height: 250,);
+    }
+    else {
+      return RawMaterialButton(
+        child: Container(
+          width: 100, height: 250,
+          decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            image: DecorationImage(image: plants[index].GetImage(), fit: BoxFit.fitHeight,
+            ),
+          ),
         ),
-      ),
-      onPressed: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    PlantPressed())); //DANIEL ADD IN NAME OF UR CLASS HERE WHERE IT SAYS "PLANT(int selectedIndex)"
-      }, //navigator
-    );
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      PlantPressed()));
+        } ,
+      );
+    }
   }
-
-  Column _BuildPlantColumn(
-    String label,
-    String plant1,
-    String plant2,
-    String plant3,
-  ) {
-    return Column(
+  Column _BuildPlantColumn(String label, int index1, int index2, int index3) {
+    return Column (
       children: [
         Container(
           alignment: Alignment.centerLeft,
           padding: EdgeInsets.all(5),
-          child: Text(
-            label,
-            style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-          ),
+          child: Text(label, style: TextStyle(fontSize: 16, color: Colors.grey[600]),),
           color: Colors.grey[300],
           height: 28,
         ),
@@ -497,9 +575,9 @@ Widget GardenPage(BuildContext context) {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _BuildPlantButton(plant1),
-              _BuildPlantButton(plant2),
-              _BuildPlantButton(plant3),
+              _BuildPlantButton(user.plants, index1),
+              _BuildPlantButton(user.plants, index2),
+              _BuildPlantButton(user.plants, index3),
             ],
           ),
           height: 88,
@@ -515,19 +593,17 @@ Widget GardenPage(BuildContext context) {
       ],
     );
   }
-
   return Column(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
-      _BuildPlantColumn(
-          'Plants 1-3', 'images/plant01.png', 'images/plant02.png', ''),
-      _BuildPlantColumn('Plants 4-6', '', '', ''),
-      _BuildPlantColumn('Plants 7-9', '', '', ''),
-      _BuildPlantColumn('El Big Boi\'s', '', '', ''),
+      _BuildPlantColumn('Plants 1-3', 0, 1, 2),
+      _BuildPlantColumn('Plants 4-6', 3, 4, 5),
+      _BuildPlantColumn('Plants 7-9', 6, 7, 8),
+      _BuildPlantColumn('El Big Boi\'s', 9, 10, 11),
     ],
   );
 }
-
 Widget FriendsPage() {
   // Builder widgets
   return Scaffold(
@@ -606,51 +682,51 @@ class Settings extends StatefulWidget {
   @override
   _SettingsState createState() => _SettingsState();
 }
-
 class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Settings',
-          style: TextStyle(fontSize: 16),
-        ),
+        title: Text('Settings', style: TextStyle(fontSize: 16),),
       ),
       body: Column(
         children: [
           TextButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MyAccountSettings()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => MyAccountSettings())).then((value) => setState(() {}));
             },
-            child: Container(
-              padding:
-                  EdgeInsets.only(left: 10, top: 12, right: 10, bottom: 12),
-              child: Row(children: [
-                Icon(Icons.account_circle),
-                SizedBox(
-                  width: 16,
-                ),
-                Text('My Account')
-              ]),
+            child: Container (
+              padding: EdgeInsets.only(left: 10, top: 12, right: 10, bottom: 12),
+              child: Row(
+                  children: [
+                    Icon(Icons.account_circle),
+                    SizedBox(width: 16,),
+                    Text('My Account')]),
             ),
           ),
           TextButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => PrivacySettings()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacySettings()));},
+            child: Container (
+              padding: EdgeInsets.only(left: 10, top: 12, right: 10, bottom: 12),
+              child: Row(
+                  children: [
+                    Icon(Icons.lock),
+                    SizedBox(width: 16,),
+                    Text('Privacy')]),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.popUntil(context, ModalRoute.withName('/'));
             },
-            child: Container(
-              padding:
-                  EdgeInsets.only(left: 10, top: 12, right: 10, bottom: 12),
-              child: Row(children: [
-                Icon(Icons.lock),
-                SizedBox(
-                  width: 16,
-                ),
-                Text('Privacy')
-              ]),
+            child: Container (
+              padding: EdgeInsets.only(left: 10, top: 12, right: 10, bottom: 12),
+              child: Row(
+                  children: [
+                    Icon(Icons.logout),
+                    SizedBox(width: 16,),
+                    Text('Log Out')]),
             ),
           ),
         ],
@@ -659,105 +735,107 @@ class _SettingsState extends State<Settings> {
   }
 }
 
-class createAccount extends StatefulWidget {
+class MyAccountSettings extends StatefulWidget {
   @override
-  _createAccountState createState() => _createAccountState();
+  _MyAccountSettingsState createState() => _MyAccountSettingsState();
 }
+class _MyAccountSettingsState extends State<MyAccountSettings> {
+  TextStyle style = TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 16);
+  //File _image;
+  final imagePicker = ImagePicker();
+  Future getImage() async {
+    final pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
 
-class _createAccountState extends State<createAccount> {
+    setState(() {
+      if(pickedFile != null) {
+        //user.profilePicture = pickedFile;
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Container(
-        height: height,
-        width: width,
-        child: SingleChildScrollView(
+      appBar: AppBar(
+        title: Text('My Account', style: TextStyle(fontSize: 16),),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              AppBar(
-                title: Center(child: Text('Gratitude Garden')),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 100,
+                    height: 100,
+                    child: user.GetProfilePicture(),
+                  ),
+                  TextButton(
+                    child: Text(
+                      'Change Profile Picture',
+                      style: style,
+                    ),
+                    //onPressed: getImage,
+                    onPressed: () {
+                      user.profilePicture = user.profilePicture == '' ? 'images/spiderman.png' : '';
+                      setState(() {
+                      });
+                    },
+                  ),
+                ],
               ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Name', style: style),
+                  Text(user.name, style: style),
+                ],
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Email', style: style),
+                  Text(user.email, style: style),
+                ],
+              ),
+              SizedBox(height: 20),
               Container(
-                  width: width,
-                  height: height * 0.25,
-                  child: Image(image: AssetImage('images/GG.jpg'))),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Create Account',
-                      style: TextStyle(
-                          fontSize: 25.0, fontWeight: FontWeight.bold),
+                child: Text('Password', style: style),
+                padding: EdgeInsets.only(bottom: 10),
+                alignment: Alignment.centerLeft,
+              ),
+              Column(
+                children: [
+                  Container(
+                    width: 240,
+                    height: 40,
+                    child: TextField(
+                      style: TextStyle(fontSize: 14),
+                      obscureText: true,
+                      autofocus: false,
+                      decoration: InputDecoration(
+                        hintText: 'Current Password',
+                      ),
                     ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 30.0,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'Name',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 30.0,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'Email',
-                  suffixIcon: Icon(Icons.email),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 30.0,
-              ),
-              TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  hintText: 'Password',
-                  suffixIcon: Icon(Icons.visibility_off),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 30.0,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton(
-                      child: Text('Create Account'),
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Garden()));
-                      },
+                  Container(
+                    width: 240,
+                    height: 40,
+                    child: TextField(
+                      style: TextStyle(fontSize: 14),
+                      obscureText: true,
+                      autofocus: false,
+                      decoration: InputDecoration(
+                        hintText: 'New Password',
+                      ),
                     ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20.0),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Second()));
-                },
-              ),
+                  ),
+                ],
+              )
             ],
           ),
         ),
@@ -766,134 +844,17 @@ class _createAccountState extends State<createAccount> {
   }
 }
 
-class MyAccountSettings extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'My Account',
-          style: TextStyle(fontSize: 16),
-        ),
-      ),
-      body: Container(
-        padding: EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: AssetImage('images/spiderman.png'),
-                        fit: BoxFit.cover,
-                      )),
-                ),
-                TextButton(
-                  child: Text('Change Profile Picture'),
-                  onPressed: () {},
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Name',
-                    style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12)),
-                Text('Peter Parker',
-                    style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12)),
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Email',
-                    style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12)),
-                Text('peterparker@marvelmail.com',
-                    style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12)),
-              ],
-            ),
-            SizedBox(height: 20),
-            Container(
-              child: Text('Password',
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 12)),
-              padding: EdgeInsets.only(bottom: 10),
-              alignment: Alignment.centerLeft,
-            ),
-            Column(
-              children: [
-                Container(
-                  width: 240,
-                  height: 30,
-                  child: TextField(
-                    style: TextStyle(fontSize: 12),
-                    obscureText: true,
-                    autofocus: false,
-                    decoration: InputDecoration(
-                      hintText: 'Current Password',
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 240,
-                  height: 30,
-                  child: TextField(
-                    style: TextStyle(fontSize: 12),
-                    obscureText: true,
-                    autofocus: false,
-                    decoration: InputDecoration(
-                      hintText: 'New Password',
-                    ),
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 enum PrivacyValues { OnlyFriends, Everyone }
-
 class PrivacySettings extends StatefulWidget {
   @override
   _PrivacySettingsState createState() => _PrivacySettingsState();
 }
-
 class _PrivacySettingsState extends State<PrivacySettings> {
-  PrivacyValues value;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'My Account',
-          style: TextStyle(fontSize: 16),
-        ),
+        title: Text('My Account', style: TextStyle(fontSize: 16),),
       ),
       body: Container(
         alignment: Alignment.topLeft,
@@ -901,20 +862,10 @@ class _PrivacySettingsState extends State<PrivacySettings> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Receive Plants',
-                style: TextStyle(
-                    color: Colors.blue,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16)),
+            Text('Receive Plants', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 20)),
             Container(
-              padding: EdgeInsets.only(left: 24, top: 8),
-              child: Text(
-                'Let other users send me plants',
-                style: TextStyle(
-                    color: Colors.blue,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12),
-              ),
+              padding: EdgeInsets.only(left: 24, top: 12),
+              child: Text('Let other users send me plants', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 16),),
             ),
             Container(
               alignment: Alignment.topLeft,
@@ -922,64 +873,124 @@ class _PrivacySettingsState extends State<PrivacySettings> {
               child: Column(
                 children: [
                   Container(
-                    height: 36,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Only Friends',
-                            style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12)),
-                        Radio<PrivacyValues>(
-                          groupValue: value,
-                          value: PrivacyValues.OnlyFriends,
-                          onChanged: (PrivacyValues _value) {
-                            setState(() {
-                              value = _value;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
+                  height: 36,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Only Friends', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 16)),
+                      Radio<PrivacyValues>(
+                        activeColor: Colors.blue,
+                        groupValue: user.privacy,
+                        value: PrivacyValues.OnlyFriends,
+                        onChanged: (PrivacyValues _value) {
+                          setState(() {
+                            user.privacy = _value;
+                          });
+                        },
+                      ),
+                    ],
                   ),
-                  Divider(
-                    thickness: 1,
-                    height: 1,
-                    color: Colors.blue[100],
-                    endIndent: 10,
-                  ),
+                ),
+                  Divider(thickness: 1, height: 1, color: Colors.blue[100], endIndent: 10,),
                   Container(
                     height: 36,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Everyone',
-                            style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12)),
+                        Text('Everyone', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 16)),
                         Radio<PrivacyValues>(
-                          groupValue: value,
+                          groupValue: user.privacy,
                           value: PrivacyValues.Everyone,
                           onChanged: (PrivacyValues _value) {
                             setState(() {
-                              value = _value;
+                              user.privacy = _value;
                             });
                           },
                         ),
                       ],
                     ),
                   ),
-                  Divider(
-                    thickness: 1,
-                    height: 1,
-                    color: Colors.blue[100],
-                    endIndent: 10,
-                  ),
+                  Divider(thickness: 1, height: 1, color: Colors.blue[100], endIndent: 10,),
                 ],
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ViewGratitude extends StatefulWidget {
+  @override
+  _ViewGratitudeState createState() => _ViewGratitudeState();
+}
+class _ViewGratitudeState extends State<ViewGratitude> {
+  @override
+  Widget build(BuildContext context) {
+    user.plants[0].AddGratitude('I am grateful for pizza');
+    user.plants[0].AddGratitude('I am grateful for tacos');
+    user.plants[0].AddGratitude('I am grateful for soup');
+    user.plants[0].AddGratitude('I am grateful for caffeine');
+    user.plants[0].AddGratitude('I am grateful for sleep');
+    user.plants[0].AddGratitude('I am grateful for money');
+    user.plants[0].AddGratitude('I am grateful for music');
+    user.plants[0].AddGratitude('I am grateful for games');
+    user.plants[0].AddGratitude('I am grateful for shoes');
+    user.plants[0].AddGratitude('I am grateful for sleep');
+    user.plants[0].AddGratitude('I am grateful for doggos');
+    user.plants[0].AddGratitude('I am grateful for memes');
+    user.plants[0].AddGratitude('I am grateful for sleep');
+    user.plants[0].AddGratitude('I am grateful for sleep');
+    return Scaffold(
+      appBar: AppBar(title: Text('View Gratitude', style: TextStyle(fontSize: 16))),
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                image: DecorationImage(
+                  image: AssetImage('images/plant01.png'),
+                  fit: BoxFit.fitHeight,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.all(20),
+                child: Container(
+                  color: Colors.blue,
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(bottom: 10),
+                        child: Text('My Gratitude', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16)),
+                      ),
+                      Expanded(
+                        child: Container(
+                          color: Colors.white,
+                          padding: EdgeInsets.only(top: 20, bottom: 20, left: 20, right: 10),
+                          child: Scrollbar(
+                            isAlwaysShown: true,
+                            child: SingleChildScrollView(
+                              padding: EdgeInsets.only(right: 15),
+                              child: Text(user.plants[0].PrintGratitude(), style:  TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
+                            ),
+                          )
+                        )
+                      ),
+                    ],
+                  )
+                )
+              ),
+            )
           ],
         ),
       ),
