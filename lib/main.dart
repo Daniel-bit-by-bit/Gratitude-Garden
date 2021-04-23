@@ -13,7 +13,7 @@ void main() {
       '/': (context) => StartUp(),
       '/sign_in': (context) => SignIn(),
       '/create_account': (context) => createAccount(),
-      //'/feed_gratitude': (context) => AddGratitude(),
+      '/feed_gratitude': (context) => AddGratitude(),
       //'view_gratitude': (context) => ViewGratitude(),
       //'send_a_plant': (context) => SendAPlant(),
     },
@@ -982,6 +982,88 @@ class _PrivacySettingsState extends State<PrivacySettings> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+
+class AddGratitude extends StatefulWidget {
+  @override
+  _AddGratitudeState createState() => _AddGratitudeState();
+}
+
+class _AddGratitudeState extends State<AddGratitude> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 45,
+                      height: 45,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: AssetImage('images/spiderman.png'),
+                            fit: BoxFit.cover,
+                          )),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      'Peter Parker',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Gratitude Garden',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    IconButton(
+                      visualDensity: VisualDensity.compact,
+                      splashRadius: 24,
+                      icon: Icon(Icons.menu),
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Settings()));
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+        ),
+      body: Column(
+       children: <Widget>[
+        Card(
+          color: Colors.white,
+           child: Padding(
+             padding: EdgeInsets.all(8.0),
+             child: TextField(
+               maxLines: 8,
+               decoration: InputDecoration.collapsed(hintText: "Enter gratitude here"),
+             ),
+            ),
+           ),
+         ElevatedButton(
+           child: Text('Submit'),
+           onPressed: () {},
+          ),
+         ],
+       ),
       ),
     );
   }
