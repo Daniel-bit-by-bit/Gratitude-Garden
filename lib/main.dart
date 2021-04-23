@@ -1,5 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:gratitude_garden/User.dart';
 import 'package:gratitude_garden/Plant.dart';
 
@@ -324,8 +326,18 @@ class _createAccountState extends State<createAccount> {
               SizedBox(height: 20.0),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Second()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn()));
                 },
+                child: Text.rich(
+                  TextSpan(
+                    text: 'Already have an account? ',
+                    children: [
+                      TextSpan(
+                          text: 'Sign In'
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
@@ -335,7 +347,7 @@ class _createAccountState extends State<createAccount> {
   }
 }
 
-List<Plant> plants = [new Plant('images/plant02.png'), new Plant('images/plant02.png')];
+List<Plant> plants = [new Plant('images/plant1-2.png'), new Plant('images/plant1-0.png'), new Plant('images/plant1-3.png')];
 User user = new User('Petor Parker', 'peterparker@marvelmail.com', 'iamspiderman123', plants, [], '', PrivacyValues.OnlyFriends);
 
 class Garden extends StatefulWidget {
@@ -343,11 +355,11 @@ class Garden extends StatefulWidget {
   _GardenState createState() => _GardenState();
 }
 class _GardenState extends State<Garden> {
-  List<Widget> pages = <Widget> [GardenPage(), FriendsPage()];
-  int navIndex = 0;
 
+  int navIndex = 0;
   @override
   Widget build (BuildContext context) {
+    List<Widget> pages = <Widget> [GardenPage(context), FriendsPage()];
     return MaterialApp(
       title: 'My Garden',
       home: Scaffold(
@@ -405,7 +417,7 @@ class _GardenState extends State<Garden> {
   }
 }
 
-Widget GardenPage() {
+Widget GardenPage(BuildContext context) {
   // Builder widgets
   Widget _BuildPlantButton(List<Plant> plants, int index) {
     if(index >= plants.length) {
@@ -422,7 +434,7 @@ Widget GardenPage() {
           ),
         ),
         onPressed: () {
-          //Navigator.push(context, MaterialPageRoute(builder: (context) => Plant(int selectedIndex)));
+          //Navigator.push(context, MaterialPageRoute(builder: (context) => MyAccountSettings()));
         } ,
       );
     }
@@ -539,90 +551,108 @@ class MyAccountSettings extends StatefulWidget {
   @override
   _MyAccountSettingsState createState() => _MyAccountSettingsState();
 }
-
-
 class _MyAccountSettingsState extends State<MyAccountSettings> {
+  TextStyle style = TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 16);
+  File _image;
+  final imagePicker = ImagePicker();
+  Future getImage() async {
+    final pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
 
+    setState(() {
+      if(pickedFile != null) {
+        //user.profilePicture = pickedFile;
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Account', style: TextStyle(fontSize: 16),),
+        title: Text(
+          'My Account',
+          style: TextStyle(fontSize: 16),
+        ),
       ),
-      body: Container(
-        padding: EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 100,
-                  height: 100,
-                  child: user.GetProfilePicture(),
-
-                ),
-                TextButton(
-                  child: Text('Change Profile Picture'),
-                  onPressed: () {
-                    setState(() {
-                      user.profilePicture = user.profilePicture == '' ? 'images/spiderman.png' : '';});
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Name', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
-                Text(user.name, style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Email', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
-                Text(user.email, style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
-              ],
-            ),
-            SizedBox(height: 20),
-            Container(
-              child: Text('Password', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
-              padding: EdgeInsets.only(bottom: 10),
-              alignment: Alignment.centerLeft,
-            ),
-            Column(
-              children: [
-                Container(
-                  width: 240,
-                  height: 30,
-                  child: TextField(
-                    style: TextStyle(fontSize: 12),
-                    obscureText: true,
-                    autofocus: false,
-                    decoration: InputDecoration(
-                      hintText: 'Current Password',
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 100,
+                    height: 100,
+                    child: user.GetProfilePicture(),
+                  ),
+                  TextButton(
+                    child: Text(
+                      'Change Profile Picture',
+                      style: style,
+                    ),
+                    //onPressed: getImage,
+                    onPressed: () {
+                      setState(() {
+                        user.profilePicture = user.profilePicture == '' ? 'images/spiderman.png' : '';
+                      });
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Name', style: style),
+                  Text(user.name, style: style),
+                ],
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Email', style: style),
+                  Text(user.email, style: style),
+                ],
+              ),
+              SizedBox(height: 20),
+              Container(
+                child: Text('Password', style: style),
+                padding: EdgeInsets.only(bottom: 10),
+                alignment: Alignment.centerLeft,
+              ),
+              Column(
+                children: [
+                  Container(
+                    width: 240,
+                    height: 40,
+                    child: TextField(
+                      style: TextStyle(fontSize: 14),
+                      obscureText: true,
+                      autofocus: false,
+                      decoration: InputDecoration(
+                        hintText: 'Current Password',
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  width: 240,
-                  height: 30,
-                  child: TextField(
-                    style: TextStyle(fontSize: 12),
-                    obscureText: true,
-                    autofocus: false,
-                    decoration: InputDecoration(
-                      hintText: 'New Password',
+                  Container(
+                    width: 240,
+                    height: 40,
+                    child: TextField(
+                      style: TextStyle(fontSize: 14),
+                      obscureText: true,
+                      autofocus: false,
+                      decoration: InputDecoration(
+                        hintText: 'New Password',
+                      ),
                     ),
                   ),
-                ),
-              ],
-            )
-          ],
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -647,10 +677,10 @@ class _PrivacySettingsState extends State<PrivacySettings> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Receive Plants', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 16)),
+            Text('Receive Plants', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 20)),
             Container(
-              padding: EdgeInsets.only(left: 24, top: 8),
-              child: Text('Let other users send me plants', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12),),
+              padding: EdgeInsets.only(left: 24, top: 12),
+              child: Text('Let other users send me plants', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 16),),
             ),
             Container(
               alignment: Alignment.topLeft,
@@ -662,8 +692,9 @@ class _PrivacySettingsState extends State<PrivacySettings> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Only Friends', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
+                      Text('Only Friends', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 16)),
                       Radio<PrivacyValues>(
+                        activeColor: Colors.blue,
                         groupValue: user.privacy,
                         value: PrivacyValues.OnlyFriends,
                         onChanged: (PrivacyValues _value) {
@@ -681,7 +712,7 @@ class _PrivacySettingsState extends State<PrivacySettings> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Everyone', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 12)),
+                        Text('Everyone', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 16)),
                         Radio<PrivacyValues>(
                           groupValue: user.privacy,
                           value: PrivacyValues.Everyone,
