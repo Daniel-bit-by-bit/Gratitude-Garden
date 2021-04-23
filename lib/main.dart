@@ -2,67 +2,67 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/rendering.dart';
 //import 'package:search_widget/search_widget.dart';
 import 'package:gratitude_garden/User.dart';
 import 'package:gratitude_garden/Plant.dart';
 
 void main() {
-  runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      routes: {
-        '/': (context) => StartUp(),
-        '/sign_in': (context) => SignIn(),
-        '/create_account': (context) => createAccount(),
-      },
-    ));
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    initialRoute: '/',
+    routes: {
+      '/': (context) => StartUp(),
+      '/sign_in': (context) => SignIn(),
+      '/create_account': (context) => createAccount(),
+      //'/feed_gratitude': (context) => AddGratitude(),
+      //'view_gratitude': (context) => ViewGratitude(),
+      //'send_a_plant': (context) => SendAPlant(),
+    },
+  ));
 }
 
 class StartUp extends StatelessWidget {
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Center(child: Text('Gratitude Garden')),
       ),
       body: Center(
-          child: Column(
-          children: <Widget>[
+          child: Column(children: <Widget>[
             Image(image: AssetImage('images/GG.jpg')),
-            Text('Planting Gratitude with the Right Attitude', style: TextStyle(fontSize: 20.0)),
+            Text('Planting Gratitude with the Right Attitude',
+            style: TextStyle(fontSize: 20.0)),
             ElevatedButton(
-              child: Text('Sign In'),
-              onPressed: () {
-                Navigator.pushNamed(context, '/sign_in');
-              }
-            ),
-            ElevatedButton(
-              child: Text('Create an Account'),
-              onPressed: () {
-                Navigator.pushNamed(context, '/create_account');
-              },
-            )
-          ]
-      )),
-
+            child: Text('Sign In'),
+            onPressed: () {
+              Navigator.pushNamed(context, '/sign_in');
+            }),
+        ElevatedButton(
+          child: Text('Create an Account'),
+          onPressed: () {
+            Navigator.pushNamed(context, '/create_account');
+          },
+        )
+      ])),
     );
   }
 }
 
 //Image(image: AssetImage('images/GG.jpg'))
 
-  class SignIn extends StatefulWidget {
-    @override
-    _SignInState createState() => _SignInState();
-  }
+class SignIn extends StatefulWidget {
+  @override
+  _SignInState createState() => _SignInState();
+}
 
-class _SignInState extends State<SignIn>{
+class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
-    double width=MediaQuery.of(context).size.width;
-    double height=MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
         height: height,
@@ -70,21 +70,24 @@ class _SignInState extends State<SignIn>{
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children:[
+            children: [
               AppBar(
                 title: Center(child: Text('Gratitude Garden')),
               ),
               Container(
-                width: width,
-                height: height*0.25,
-                child: Image(image: AssetImage('images/GG.jpg'))
-              ),
+                  width: width,
+                  height: height * 0.25,
+                  child: Image(image: AssetImage('images/GG.jpg'))),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text('Sign In', style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),),
+                    Text(
+                      'Sign In',
+                      style: TextStyle(
+                          fontSize: 25.0, fontWeight: FontWeight.bold),
+                    ),
                   ],
                 ),
               ),
@@ -95,7 +98,7 @@ class _SignInState extends State<SignIn>{
                   suffixIcon: Icon(Icons.email),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
-                 ),
+                  ),
                 ),
                ),
               SizedBox(height: 30.0,),
@@ -111,7 +114,7 @@ class _SignInState extends State<SignIn>{
                 ),
               SizedBox(height: 30.0,),
               Padding(
-                padding: const EdgeInsets.all (5.0),
+                padding: const EdgeInsets.all(5.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -157,8 +160,8 @@ class Second extends StatefulWidget {
 class _SecondState extends State<Second> {
   @override
   Widget build(BuildContext context) {
-    double width=MediaQuery.of(context).size.width;
-    double height=MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
         height: height,
@@ -166,21 +169,24 @@ class _SecondState extends State<Second> {
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children:[
+            children: [
               AppBar(
                 title: Center(child: Text('Gratitude Garden')),
               ),
               Container(
                   width: width,
-                  height: height*0.45,
-                  child: Image(image: AssetImage('images/GG.jpg'))
-              ),
+                  height: height * 0.45,
+                  child: Image(image: AssetImage('images/GG.jpg'))),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text('Sign Up', style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),),
+                    Text(
+                      'Sign Up',
+                      style: TextStyle(
+                          fontSize: 25.0, fontWeight: FontWeight.bold),
+                    ),
                   ],
                 ),
               ),
@@ -207,7 +213,7 @@ class _SecondState extends State<Second> {
               ),
               SizedBox(height: 30.0,),
               Padding(
-                padding: const EdgeInsets.all (10.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -228,9 +234,7 @@ class _SecondState extends State<Second> {
                   TextSpan(
                     text: 'Already have an account',
                     children: [
-                      TextSpan(
-                          text: 'Sign In'
-                      ),
+                      TextSpan(text: 'Sign In'),
                     ],
                   ),
                 ),
@@ -238,6 +242,98 @@ class _SecondState extends State<Second> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+class PlantPressed extends StatefulWidget {
+  @override
+  _PlantPressedState createState() => _PlantPressedState();
+}
+
+class _PlantPressedState extends State<PlantPressed> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 45,
+                    height: 45,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: AssetImage('images/spiderman.png'),
+                          fit: BoxFit.cover,
+                        )),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Peter Parker',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Gratitude Garden',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  IconButton(
+                    visualDensity: VisualDensity.compact,
+                    splashRadius: 24,
+                    icon: Icon(Icons.menu),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Settings()));
+                    },
+                  )
+                ], //row children 2
+              ),
+            ], //row children1
+          ),
+        ),
+
+        body: Center(
+          //alignment: Alignment.centerRight,
+          child: Column(
+              children: [
+                Row(
+                  children: [
+                    Align(alignment: Alignment.topCenter),
+                    Container(height: 200, width: 200, child: Image(image: AssetImage('images/plant01.png')),),
+                  ],//children-inner
+                ),//row1
+                Row(
+                    children:[
+                      Align(alignment: Alignment.center),
+                      Container(
+                          height: 200,
+                          width: 200,
+                          color: Colors.blue,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children:[
+                                Container(width: 150, height: 50, color: Colors.lightBlueAccent, child: TextButton(child: Text('Feed Gratitude', style: TextStyle(fontSize: 18, color: Colors.white)), onPressed:() {Navigator.pushNamed(context, '/feed_gratitude');} )),
+                                Container(width: 150, height: 50,  color: Colors.lightBlueAccent,child: TextButton(child: Text('View Gratitude', style: TextStyle(fontSize: 18, color: Colors.white)), onPressed:() {Navigator.pushNamed(context, '/feed_gratitude');} )),
+                                Container(width: 150, height: 50, color: Colors.lightBlueAccent,child: TextButton(child: Text('Send a Plant', style: TextStyle(fontSize: 18, color: Colors.white)), onPressed:() {Navigator.pushNamed(context, '/feed_gratitude');} )),
+                              ]) //children
+                      ),
+                    ]
+                )
+              ]),
+        ),//children-outer
       ),
     );
   }
@@ -366,37 +462,53 @@ class _GardenState extends State<Garden> {
       home: Scaffold(
         appBar: AppBar(
             title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children:[
-                Row(
-                  children: [
-                    Container(
-                      width: 45,
-                      height: 45,
-                      child: user.GetProfilePicture(),
-                    ),
-                    SizedBox(width: 10,),
-                    Text(user.name, style: TextStyle(fontSize: 16),),
-                  ],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 45,
+                  height: 45,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage('images/spiderman.png'),
+                        fit: BoxFit.cover,
+                      )),
                 ),
-                Row(
-                  children: [
-                    Text('Gratitude Garden', style: TextStyle(fontSize: 16),),
-                    SizedBox(width: 10,),
-                    IconButton(
-                      visualDensity: VisualDensity.compact,
-                      splashRadius: 24,
-                      icon: Icon(Icons.menu),
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Settings())).then((value) => setState(() {}));
-                      },
-                    ),
-                  ],
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  'Peter Parker',
+                  style: TextStyle(fontSize: 16),
                 ),
               ],
-            )
-          //Center(child: Text('Gratitude Garden')),
-        ),
+            ),
+            Row(
+              children: [
+                Text(
+                  'Gratitude Garden',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                IconButton(
+                  visualDensity: VisualDensity.compact,
+                  splashRadius: 24,
+                  icon: Icon(Icons.menu),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Settings()));
+                  },
+                ),
+              ],
+            ),
+          ],
+        )
+            //Center(child: Text('Gratitude Garden')),
+            ),
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.blue,
           unselectedItemColor: Colors.blue[900],
@@ -413,7 +525,7 @@ class _GardenState extends State<Garden> {
           ],
         ),
         body: pages[navIndex],
-      ) ,
+      ),
     );
   }
 }
@@ -435,7 +547,11 @@ Widget GardenPage(BuildContext context) {
           ),
         ),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ViewGratitude()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      PlantPressed()));
         } ,
       );
     }
@@ -621,7 +737,7 @@ class MyAccountSettings extends StatefulWidget {
 }
 class _MyAccountSettingsState extends State<MyAccountSettings> {
   TextStyle style = TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 16);
-  File _image;
+  //File _image;
   final imagePicker = ImagePicker();
   Future getImage() async {
     final pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
@@ -636,10 +752,7 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'My Account',
-          style: TextStyle(fontSize: 16),
-        ),
+        title: Text('My Account', style: TextStyle(fontSize: 16),),
       ),
       body: SingleChildScrollView(
         child: Container(
