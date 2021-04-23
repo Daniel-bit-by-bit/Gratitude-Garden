@@ -435,7 +435,7 @@ Widget GardenPage(BuildContext context) {
           ),
         ),
         onPressed: () {
-          //Navigator.push(context, MaterialPageRoute(builder: (context) => Plant(int selectedIndex)));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ViewGratitude()));
         } ,
       );
     }
@@ -797,6 +797,83 @@ class _PrivacySettingsState extends State<PrivacySettings> {
                 ],
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ViewGratitude extends StatefulWidget {
+  @override
+  _ViewGratitudeState createState() => _ViewGratitudeState();
+}
+class _ViewGratitudeState extends State<ViewGratitude> {
+  @override
+  Widget build(BuildContext context) {
+    user.plants[0].AddGratitude('I am grateful for pizza');
+    user.plants[0].AddGratitude('I am grateful for tacos');
+    user.plants[0].AddGratitude('I am grateful for soup');
+    user.plants[0].AddGratitude('I am grateful for caffeine');
+    user.plants[0].AddGratitude('I am grateful for sleep');
+    user.plants[0].AddGratitude('I am grateful for money');
+    user.plants[0].AddGratitude('I am grateful for music');
+    user.plants[0].AddGratitude('I am grateful for games');
+    user.plants[0].AddGratitude('I am grateful for shoes');
+    user.plants[0].AddGratitude('I am grateful for sleep');
+    user.plants[0].AddGratitude('I am grateful for doggos');
+    user.plants[0].AddGratitude('I am grateful for memes');
+    user.plants[0].AddGratitude('I am grateful for sleep');
+    user.plants[0].AddGratitude('I am grateful for sleep');
+    return Scaffold(
+      appBar: AppBar(title: Text('View Gratitude', style: TextStyle(fontSize: 16))),
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                image: DecorationImage(
+                  image: AssetImage('images/plant01.png'),
+                  fit: BoxFit.fitHeight,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.all(20),
+                child: Container(
+                  color: Colors.blue,
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(bottom: 10),
+                        child: Text('My Gratitude', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16)),
+                      ),
+                      Expanded(
+                        child: Container(
+                          color: Colors.white,
+                          padding: EdgeInsets.only(top: 20, bottom: 20, left: 20, right: 10),
+                          child: Scrollbar(
+                            isAlwaysShown: true,
+                            child: SingleChildScrollView(
+                              padding: EdgeInsets.only(right: 15),
+                              child: Text(user.plants[0].PrintGratitude(), style:  TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
+                            ),
+                          )
+                        )
+                      ),
+                    ],
+                  )
+                )
+              ),
+            )
           ],
         ),
       ),
