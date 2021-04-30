@@ -6,8 +6,11 @@ import 'package:flutter/rendering.dart';
 //import 'package:search_widget/search_widget.dart';
 import 'package:gratitude_garden/User.dart';
 import 'package:gratitude_garden/Plant.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     initialRoute: '/',
@@ -18,8 +21,9 @@ void main() {
       '/feed_gratitude': (context) => AddGratitude(),
       '/view_gratitude': (context) => ViewGratitude(),
       //'/send_a_plant': (context) => SendAPlant(),
-    },
-  ));
+      },
+    ),
+  );
 }
 
 class StartUp extends StatelessWidget {
@@ -43,15 +47,15 @@ class StartUp extends StatelessWidget {
               ),
             ),
             ElevatedButton(
-            child: Text('Sign In'),
-            onPressed: () {
-              Navigator.pushNamed(context, '/sign_in');
+              child: Text('Sign In'),
+              onPressed: () {
+                Navigator.pushNamed(context, '/sign_in');
             },
           ),
-        ElevatedButton(
-          child: Text('Create an Account'),
-          onPressed: () {
-            Navigator.pushNamed(context, '/create_account');
+           ElevatedButton(
+              child: Text('Create an Account'),
+              onPressed: () {
+                Navigator.pushNamed(context, '/create_account');
           },
          ),
         ],

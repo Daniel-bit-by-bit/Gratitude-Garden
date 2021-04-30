@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "79947017860",
+    "project_id": "gratitude-garden-83e02",
+    "storage_bucket": "gratitude-garden-83e02.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79947017860:android:5a187079f13ebebeafdcd1",
+        "android_client_info": {
+          "package_name": "gratitude.garden"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "79947017860-5e25781f3fktged6v0ndf3ucf1bbali0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuVz8HK-vP8qCBELvrgoQMSRq_qlxDKQY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "79947017860-5e25781f3fktged6v0ndf3ucf1bbali0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
