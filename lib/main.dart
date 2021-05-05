@@ -1,12 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/rendering.dart';
 //import 'package:search_widget/search_widget.dart';
 import 'package:gratitude_garden/User.dart';
 import 'package:gratitude_garden/Plant.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'dart:async';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,10 +24,212 @@ Future<void> main() async {
       '/feed_gratitude': (context) => AddGratitude(),
       '/view_gratitude': (context) => ViewGratitude(),
       //'/send_a_plant': (context) => SendAPlant(),
+      '/database_test': (context) => TestDatabase(),
       },
     ),
   );
 }
+
+class TestDatabase extends StatefulWidget {
+  const TestDatabase({Key key}) : super(key: key);
+  @override
+  _TestDatabaseState createState() => _TestDatabaseState();
+}
+
+class _TestDatabaseState extends State<TestDatabase> {
+  final _formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final friendsController = TextEditingController();
+
+  DatabaseReference dbref = FirebaseDatabase.instance.reference().child("users");
+  List<dynamic> friends = [];
+
+  @override
+  Widget build(BuildContext context) {
+    FirebaseDatabase.instance.setPersistenceEnabled(true);
+    String userName;
+    return Scaffold(
+      appBar: AppBar(title: Text('Database'),),
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Column(
+                  children:[
+                    TextFormField(
+                      controller: nameController,
+                      decoration: InputDecoration(
+                        labelText: 'User Name',
+                        hintText: 'Name',
+                      ),
+                      validator: (value) {
+                        if(value.isEmpty) {
+                          return 'Enter username';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        hintText: 'e.g. peterparker@marvelmail.com',
+                      ),
+                      validator: (value) {
+                        if(value.isEmpty) {
+                          return 'Enter email';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: friendsController,
+                      decoration: InputDecoration(
+                        labelText: 'Number of Friends',
+                        hintText: '0, 1, 2, ...',
+                      ),
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        friends.clear();
+                        for(int i = 0; i < int.parse(value); i ++) {
+                          friends.add('user$i');
+                        }
+                        if(value.isEmpty) {
+                          return 'Enter email';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextButton(
+                      child: Text('Add'),
+                      onPressed: () {
+                        dbref = FirebaseDatabase.instance.reference().child("users");
+                        debugPrint("button pressed");
+                        if(_formKey.currentState.validate()) {
+                          debugPrint("validated");
+                          dbref.push().set({
+                            "name": nameController.text,
+                            "email": emailController.text,
+                            "friends": friends,
+                          }).then((_) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Added \'${nameController.text}\'')));
+                            nameController.clear();
+                            debugPrint("then");
+                          }).catchError((onError) {
+                            debugPrint("error");
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(SnackBar(content: Text(onError)));
+                          });
+                          setState(() {
+                            nameController.clear();
+                            emailController.clear();
+                            passwordController.clear();
+                            friendsController.clear();
+                          });
+                        }
+                        else {
+                        }
+                      },
+                    ),
+                    TextButton(
+                      child: Text('View Data'),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => DataList()));
+                      },
+                    ),
+                    TextButton(
+                      child: Text('Clear Data'),
+                      onPressed: () {
+                        dbref.remove();
+                      },
+                    ),
+            ]
+              ),
+            ]
+          ),
+        )
+      )
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    friendsController.dispose();
+  }
+}
+
+class DataList extends StatefulWidget {
+  DataList({Key key}) : super(key: key);
+
+  @override
+  _DataListState createState() => _DataListState();
+}
+
+class _DataListState extends State<DataList> {
+  final dbref = FirebaseDatabase.instance.reference().child("users");
+  List< Map<dynamic, dynamic> > lists = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Data')),
+      body: StreamBuilder(
+          stream: dbref.onValue,
+          builder: (context, AsyncSnapshot<Event> snapshot) {
+            if(snapshot.hasData) {
+              debugPrint('has data');
+              lists.clear();
+              DataSnapshot dataValues = snapshot.data.snapshot;
+              Map<dynamic, dynamic> values = dataValues.value;
+              debugPrint(values.toString());
+              if(values != null) {
+                values.forEach((key, values) {
+                  lists.add(values);
+                });
+              }
+              else {
+                return LinearProgressIndicator();
+              }
+              return new ListView.builder(
+                  itemCount: lists.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+                      child: Container(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text("Name: " + lists[index]["name"]),
+                                  Text("Email: " + lists[index]["email"]),
+                                  Text("Friends: " + lists[index]["friends"].toString()),
+                                ],
+                          ),
+                      ),
+                    );
+                  }
+              );
+            }
+            else {
+              debugPrint("no data");
+            }
+            return LinearProgressIndicator();
+          }
+      )
+    );
+  }
+}
+
 
 class StartUp extends StatelessWidget {
   @override
@@ -58,6 +263,14 @@ class StartUp extends StatelessWidget {
                 Navigator.pushNamed(context, '/create_account');
           },
          ),
+            RawMaterialButton(
+              fillColor: Colors.red,
+              padding: EdgeInsets.all(12),
+              child: Text('Enter the Database'),
+              onPressed: () {
+                Navigator.pushNamed(context, '/database_test');
+              },
+            ),
         ],
        ),
       ),
