@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gratitude_garden/Plant.dart';
 import 'package:gratitude_garden/main.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class GGUser {
+  String uid;
   String name;
   String email;
   String password;
@@ -18,7 +20,26 @@ class GGUser {
     plants = [];
     friends = [];
     profilePicture = '';
-    privacy = PrivacyValues.OnlyFriends;;
+    privacy = PrivacyValues.OnlyFriends;
+  }
+
+  GGUser.fromSnapshot(DataSnapshot snapshot) :
+    uid = snapshot.key.toString(),
+    name = snapshot.value['name'],
+    email = snapshot.value['email'],
+    plants = snapshot.value['plants'],
+    friends = snapshot.value['friends'],
+    privacy = snapshot.value['privacy'];
+
+  toJson() {
+    return {
+      'uid': uid.toString(),
+      'name': name,
+      'email': email,
+      'plants': plants,
+      'friends': friends,
+      'privacy': privacy.index
+    };
   }
 
   void AddPlant(Plant _plant) {

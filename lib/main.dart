@@ -45,7 +45,7 @@ class _TestDatabaseState extends State<TestDatabase> {
   final passwordController = TextEditingController();
   final friendsController = TextEditingController();
 
-  DatabaseReference dbref = FirebaseDatabase.instance.reference().child("users");
+  DatabaseReference dbref = FirebaseDatabase.instance.reference().child("Users");
   List<String> friends = [];
 
   @override
@@ -111,18 +111,19 @@ class _TestDatabaseState extends State<TestDatabase> {
                   TextButton(
                     child: Text('Add'),
                     onPressed: () {
-                      dbref = FirebaseDatabase.instance.reference().child("users");
+                      dbref = FirebaseDatabase.instance.reference().child("Users");
                       debugPrint("button pressed");
                       if (_formKey.currentState.validate()) {
                         debugPrint("validated");
                         GGUser newUser = GGUser(nameController.text, emailController.text, 'password');
+                        newUser.plants = plants;
                         newUser.friends = friends;
                         debugPrint(newUser.toString());
-                        dbref.push().set({
+                        dbref.push().set(newUser.toJson()/*{
                           "name": nameController.text,
                           "email": emailController.text,
                           "friends": friends,
-                        }).then((_) {
+                        }*/).then((_) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Added \'${nameController.text}\'')));
                           nameController.clear();
                           debugPrint("then");
@@ -201,9 +202,12 @@ class _DataListState extends State<DataList> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
+                          Text("uid: " + lists[index]["uid"]),
                           Text("Name: " + lists[index]["name"]),
                           Text("Email: " + lists[index]["email"]),
+                          Text("Friends: " + lists[index]["plants"].toString()),
                           Text("Friends: " + lists[index]["friends"].toString()),
+                          Text("Privacy: " + PrivacyValues.values[(lists[index]["privacy"])].toString()),
                         ],
                       ),
                     ),
