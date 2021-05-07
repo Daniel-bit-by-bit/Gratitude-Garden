@@ -2,32 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:gratitude_garden/Plant.dart';
 import 'package:gratitude_garden/main.dart';
 
-class User {
+class GGUser {
   String name;
   String email;
   String password;
   List<Plant> plants;
-  List<User> friends;
+  List<String> friends;
   String profilePicture;
   PrivacyValues privacy;
 
-  User(String _name, String _email, String _password, List<Plant> _plants, List<User> _friends, String _profilePicture, PrivacyValues _privacy) {
+  GGUser(String _name, String _email, String _password) {
     name = _name;
     email = _email;
     password = _password;
-    plants = _plants;
-    friends = _friends;
-    profilePicture = _profilePicture;
-    privacy = _privacy;
+    plants = [];
+    friends = [];
+    profilePicture = '';
+    privacy = PrivacyValues.OnlyFriends;;
   }
 
   void AddPlant(Plant _plant) {
     plants.add(_plant);
   }
 
-  void AddFriend(User _user) {
+  void AddFriend(GGUser _user) {
     if(!friends.contains(_user) && this != _user) {
-      friends.add(_user);
+      friends.add(_user.toString());
     }
   }
 
@@ -46,5 +46,10 @@ class User {
 
   void SetPrivacy(PrivacyValues _privacy) {
     privacy = _privacy;
+  }
+
+  @override
+  String toString() {
+    return 'name: $name, email: $email, friends: ${friends.toString()}';
   }
 }
