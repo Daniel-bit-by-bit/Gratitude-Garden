@@ -24,9 +24,6 @@ class _createAccountState extends State<createAccount> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  final friendsController = TextEditingController();
-  List<dynamic> friends = [];
-
   @override
   Widget build(BuildContext context) {
     FirebaseDatabase.instance.setPersistenceEnabled(true);
@@ -164,16 +161,13 @@ class _createAccountState extends State<createAccount> {
   }
 
   void registerUser() {
-    Map<dynamic, dynamic> tree = {'type': 'tree', 'level': '1', 'gratitude': []};
-    Map<dynamic, dynamic> cactus = {'type': 'cactus', 'level': '3'};
-
     auth.createUserWithEmailAndPassword(email: emailController.text, password: passwordController.text).then((result) {
       dbref.child(result.user.uid).set({
         'name': nameController.text,
         'email': emailController.text,
         'plants': {
           'plant1': {
-            'type': 'tree',
+            'type': 'plant1',
             'level': '1',
             'gratitude': []
           },
@@ -262,6 +256,5 @@ class _createAccountState extends State<createAccount> {
     nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
-    friendsController.dispose();
   }
 }

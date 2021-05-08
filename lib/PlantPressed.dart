@@ -8,13 +8,20 @@ import 'package:gratitude_garden/PrivacySettings.dart';
 import 'package:gratitude_garden/main.dart';
 
 class PlantPressed extends StatefulWidget {
+  PlantPressed({this.plant});
+  Map<dynamic, dynamic> plant;
+
   @override
-  _PlantPressedState createState() => _PlantPressedState();
+  _PlantPressedState createState() => _PlantPressedState(plant: plant);
 }
 
 class _PlantPressedState extends State<PlantPressed> {
+  _PlantPressedState({this.plant});
+  Map<dynamic, dynamic> plant;
+
   @override
   Widget build(BuildContext context) {
+    String path = 'images/' +'${plant['type']}' + '-' + '${plant['level']}' + '.png';
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -129,7 +136,7 @@ class _PlantPressedState extends State<PlantPressed> {
                 Container(
                   height: 200,
                   width: 200,
-                  child: Image(image: AssetImage('images/plant01.png')),
+                  child: Image(image: AssetImage(path)),
                 ),
               ], //children-inner
             ), //row1

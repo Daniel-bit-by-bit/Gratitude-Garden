@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
                               height: 45,
                               child: user.profilePicture == ''
                                   ? CircleAvatar(
-                                child: Text(user.name[0]),
+                                child: Text(values['name'].toString()[0]),
                               )
                                   : CircleAvatar(
                                 backgroundImage: AssetImage(user.profilePicture),
@@ -179,7 +179,7 @@ class _HomePageState extends State<HomePage> {
 
 Widget GardenPage(BuildContext context, String uid) {
   user.plants = plants;
-  DatabaseReference userref = FirebaseDatabase(
+  DatabaseReference plantsref = FirebaseDatabase(
       databaseURL: 'https://gratitude-garden-83e02-default-rtdb.firebaseio.com/')
       .reference()
       .child('Users')
@@ -187,8 +187,9 @@ Widget GardenPage(BuildContext context, String uid) {
       .child('plants');
 
   // Builder widgets
-  Widget _BuildPlantButton(List<Plant> plants, int index) {
-    if (index >= plants.length) {
+  Widget _BuildPlantButton(Map<dynamic, dynamic> plant) {
+    String path = 'images/' +'${plant['type']}' + '-' + '${plant['level']}' + '.png';
+    if (path == '' || path == 'images/none-0.png') {
       return SizedBox(
         width: 100,
         height: 250,
@@ -201,13 +202,13 @@ Widget GardenPage(BuildContext context, String uid) {
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             image: DecorationImage(
-              image: plants[index].GetImage(),
+              image: AssetImage(path),
               fit: BoxFit.fitHeight,
             ),
           ),
         ),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => PlantPressed()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => PlantPressed(plant: plant)));
         },
       );
     }
@@ -233,9 +234,9 @@ Widget GardenPage(BuildContext context, String uid) {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                //_BuildPlantButton(user.plants, plant1),
-                //_BuildPlantButton(user.plants, plant2),
-                //_BuildPlantButton(user.plants, plant3),
+                _BuildPlantButton(plant1),
+                _BuildPlantButton(plant2),
+                _BuildPlantButton(plant3),
               ],
             ),
             height: 88,
@@ -253,7 +254,7 @@ Widget GardenPage(BuildContext context, String uid) {
   }
 
   return StreamBuilder(
-      stream: userref.onValue,
+      stream: plantsref.onValue,
       builder: (_context, AsyncSnapshot<Event> snapshot) {
         if (snapshot.hasData) {
           debugPrint('has data2');
@@ -264,10 +265,10 @@ Widget GardenPage(BuildContext context, String uid) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              //_BuildPlantColumn('Plants 1-3', 0, 1, 2),
-              //_BuildPlantColumn('Plants 4-6', 3, 4, 5),
-              //_BuildPlantColumn('Plants 7-9', 6, 7, 8),
-              //_BuildPlantColumn('El Big Boi\'s', 9, 10, 11),
+              _BuildPlantColumn('Plants 1-3', values['plant1'], values['plant2'], values['plant3']),
+              _BuildPlantColumn('Plants 4-6', values['plant4'], values['plant5'], values['plant6']),
+              _BuildPlantColumn('Plants 7-9', values['plant7'], values['plant8'], values['plant9']),
+              _BuildPlantColumn('El Big Boi\'s', values['plant10'], values['plant11'], values['plant12']),
             ],
           );
         }
