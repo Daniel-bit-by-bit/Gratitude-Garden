@@ -1,10 +1,11 @@
-import 'package:gratitude_garden/GGUser.dart';
 import 'package:flutter/material.dart';
-import 'package:gratitude_garden/Plant.dart';
-import 'package:gratitude_garden/main.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:gratitude_garden/DataList.dart';
+import 'package:flutter/rendering.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+// dart
+import 'package:gratitude_garden/MyAccountSettings.dart';
+import 'package:gratitude_garden/PrivacySettings.dart';
+import 'package:gratitude_garden/main.dart';
 
 class PlantPressed extends StatefulWidget {
   @override

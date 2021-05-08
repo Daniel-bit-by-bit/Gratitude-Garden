@@ -1,10 +1,11 @@
-import 'package:gratitude_garden/GGUser.dart';
 import 'package:flutter/material.dart';
-import 'package:gratitude_garden/Plant.dart';
-import 'package:gratitude_garden/main.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:gratitude_garden/DataList.dart';
+import 'package:flutter/rendering.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+
+// dart
+import 'package:gratitude_garden/createAccount.dart';
+import 'package:gratitude_garden/HomePage.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -136,7 +137,7 @@ class _SignInState extends State<SignIn> {
         debugPrint('sign in');
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => Garden(uid: result.user.uid)),
+          MaterialPageRoute(builder: (context) => HomePage(uid: result.user.uid)),
         );
       }).catchError((onError) {
         showDialog(

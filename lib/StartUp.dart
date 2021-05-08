@@ -1,9 +1,4 @@
-import 'package:gratitude_garden/GGUser.dart';
 import 'package:flutter/material.dart';
-import 'package:gratitude_garden/Plant.dart';
-import 'package:gratitude_garden/main.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:gratitude_garden/GGUser.dart';
 
 class StartUp extends StatelessWidget {
   @override

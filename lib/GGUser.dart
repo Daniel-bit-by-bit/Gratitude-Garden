@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:gratitude_garden/Plant.dart';
-import 'package:gratitude_garden/main.dart';
+import 'package:flutter/rendering.dart';
 import 'package:firebase_database/firebase_database.dart';
+
+// dart
+import 'package:gratitude_garden/Plant.dart';
+import 'package:gratitude_garden/PrivacySettings.dart';
+import 'package:gratitude_garden/main.dart';
 
 class GGUser {
   String uid;
