@@ -4,6 +4,8 @@ import 'package:firebase_database/firebase_database.dart';
 class Plant {
   String id;
   String image;
+  String type;
+  int level;
   List<String> gratitude;
 
   Plant(String _image) {
@@ -17,6 +19,9 @@ class Plant {
   toJson() {
     return {
       'id': id,
+      'type': type,
+      'level': level,
+      'gratitude': gratitude
     };
   }
 

@@ -36,10 +36,18 @@ class GGUser {
       'uid': uid.toString(),
       'name': name,
       'email': email,
-      'plants': plants,
+      'plants': PlantsAsStringList(),
       'friends': friends,
       'privacy': privacy.index
     };
+  }
+
+  List<String> PlantsAsStringList() {
+    List<String> plantIDs = [];
+    plants.forEach((element) {
+      plantIDs.add(element.id);
+    });
+    return plantIDs;
   }
 
   void AddPlant(Plant _plant) {
@@ -47,8 +55,8 @@ class GGUser {
   }
 
   void AddFriend(GGUser _user) {
-    if(!friends.contains(_user) && this != _user) {
-      friends.add(_user.toString());
+    if(!friends.contains(_user) && this != _user && user != null) {
+      friends.add(_user.uid);
     }
   }
 

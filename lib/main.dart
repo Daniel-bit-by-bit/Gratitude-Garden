@@ -14,7 +14,6 @@ import 'dart:async';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -45,7 +44,9 @@ class _TestDatabaseState extends State<TestDatabase> {
   final passwordController = TextEditingController();
   final friendsController = TextEditingController();
 
-  DatabaseReference dbref = FirebaseDatabase.instance.reference().child("Users");
+  DatabaseReference dbref = FirebaseDatabase(
+    databaseURL: 'https://gratitude-garden-83e02-default-rtdb.firebaseio.com/'
+  ).reference().child("Users");
   List<String> friends = [];
 
   @override
@@ -111,7 +112,9 @@ class _TestDatabaseState extends State<TestDatabase> {
                   TextButton(
                     child: Text('Add'),
                     onPressed: () {
-                      dbref = FirebaseDatabase.instance.reference().child("Users");
+                      dbref = FirebaseDatabase(
+                          databaseURL: 'https://gratitude-garden-83e02-default-rtdb.firebaseio.com/'
+                      ).reference().child("Users");
                       debugPrint("button pressed");
                       if (_formKey.currentState.validate()) {
                         debugPrint("validated");
@@ -149,7 +152,9 @@ class _TestDatabaseState extends State<TestDatabase> {
                   TextButton(
                     child: Text('Clear Data'),
                     onPressed: () {
-                      dbref = FirebaseDatabase.instance.reference();
+                      dbref = FirebaseDatabase(
+                          databaseURL: 'https://gratitude-garden-83e02-default-rtdb.firebaseio.com/'
+                      ).reference();
                       dbref.remove();
                     },
                   ),
@@ -169,7 +174,9 @@ class DataList extends StatefulWidget {
 }
 
 class _DataListState extends State<DataList> {
-  final dbref = FirebaseDatabase.instance.reference().child("Users");
+  final dbref = FirebaseDatabase(
+      databaseURL: 'https://gratitude-garden-83e02-default-rtdb.firebaseio.com/'
+  ).reference().child("Users");
   List<Map<dynamic, dynamic>> lists = [];
 
   @override
@@ -202,7 +209,6 @@ class _DataListState extends State<DataList> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text("uid: " + lists[index]["uid"]),
                           Text("Name: " + lists[index]["name"]),
                           Text("Email: " + lists[index]["email"]),
                           Text("Friends: " + lists[index]["plants"].toString()),
@@ -649,7 +655,9 @@ class createAccount extends StatefulWidget {
 class _createAccountState extends State<createAccount> {
   final _formKey = GlobalKey<FormState>();
   FirebaseAuth auth = FirebaseAuth.instance;
-  DatabaseReference dbref = FirebaseDatabase.instance.reference().child("Users");
+  DatabaseReference dbref = FirebaseDatabase(
+      databaseURL: 'https://gratitude-garden-83e02-default-rtdb.firebaseio.com/'
+  ).reference().child("Users");
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -759,7 +767,9 @@ class _createAccountState extends State<createAccount> {
                       ElevatedButton(
                         child: Text('Create Account'),
                         onPressed: () {
-                          dbref = FirebaseDatabase.instance.reference().child("Users");
+                          dbref = FirebaseDatabase(
+                              databaseURL: 'https://gratitude-garden-83e02-default-rtdb.firebaseio.com/'
+                          ).reference().child("Users");
                           if (_formKey.currentState.validate()) {
                             registerUser();
                           }
@@ -792,10 +802,77 @@ class _createAccountState extends State<createAccount> {
   }
 
   void registerUser() {
+    Map<dynamic, dynamic> tree = {'type': 'tree', 'level': '1', 'gratitude': []};
+    Map<dynamic, dynamic> cactus = {'type': 'cactus', 'level': '3'};
+
     auth.createUserWithEmailAndPassword(email: emailController.text, password: passwordController.text).then((result) {
       dbref.child(result.user.uid).set({
         'name': nameController.text,
         'email': emailController.text,
+        'plants': {
+          'plant1': {
+            'type': 'tree',
+            'level': '1',
+            'gratitude': []
+          },
+          'plant2': {
+            'type': 'none',
+            'level': '0',
+            'gratitude': []
+          },
+          'plant3': {
+            'type': 'none',
+            'level': '0',
+            'gratitude': []
+          },
+          'plant4': {
+            'type': 'none',
+            'level': '0',
+            'gratitude': []
+          },
+          'plant5': {
+            'type': 'none',
+            'level': '0',
+            'gratitude': []
+          },
+          'plant6': {
+            'type': 'none',
+            'level': '0',
+            'gratitude': []
+          },
+          'plant7': {
+            'type': 'none',
+            'level': '0',
+            'gratitude': []
+          },
+          'plant8': {
+            'type': 'none',
+            'level': '0',
+            'gratitude': []
+          },
+          'plant9': {
+            'type': 'none',
+            'level': '0',
+            'gratitude': []
+          },
+          'plant10': {
+            'type': 'none',
+            'level': '0',
+            'gratitude': []
+          },
+          'plant11': {
+            'type': 'none',
+            'level': '0',
+            'gratitude': []
+          },
+          'plant12': {
+            'type': 'none',
+            'level': '0',
+            'gratitude': []
+          },
+        },
+        'friends': ['friend_uid'],
+        'privacy': 0,
       });
       debugPrint('push');
       Navigator.pushReplacement(
@@ -849,11 +926,17 @@ class Garden extends StatefulWidget {
 class _GardenState extends State<Garden> {
   _GardenState({this.uid});
   final String uid;
+
   List<Map<dynamic, dynamic>> lists = [];
   int navIndex = 0;
+
   @override
   Widget build(BuildContext context) {
-    List<Widget> pages = <Widget>[GardenPage(context), FriendsPage()];
+    DatabaseReference userref = FirebaseDatabase(
+        databaseURL: 'https://gratitude-garden-83e02-default-rtdb.firebaseio.com/'
+    ).reference().child('Users').child(uid);
+    List<Widget> pages = <Widget>[GardenPage(context, uid), FriendsPage()];
+
     return MaterialApp(
       title: 'My Garden',
       home: Scaffold(
@@ -861,27 +944,38 @@ class _GardenState extends State<Garden> {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 45,
-                      height: 45,
-                      child: user.profilePicture == ''
-                          ? CircleAvatar(
-                              child: Text(''),
+                StreamBuilder(
+                  stream: userref.onValue,
+                  builder: (_context, AsyncSnapshot<Event> snapshot) {
+                    if (snapshot.hasData) {
+                      debugPrint('has data2');
+                      DataSnapshot dataValues = snapshot.data.snapshot;
+                      Map<dynamic, dynamic> values = dataValues.value;
+                      debugPrint(values.toString());
+                      return Row(
+                        children: [
+                          Container(
+                            width: 45,
+                            height: 45,
+                            child: user.profilePicture == ''
+                                ? CircleAvatar(
+                              child: Text(user.name[0]),
                             )
-                          : CircleAvatar(
+                                : CircleAvatar(
                               backgroundImage: AssetImage(user.profilePicture),
                             ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      user.name,
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ],
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(values['name'],
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      );
+                    }
+                    return LinearProgressIndicator();
+                  }
                 ),
                 Row(
                   children: [
@@ -989,13 +1083,18 @@ class _GardenState extends State<Garden> {
   }
 }
 
-Widget GardenPage(BuildContext context) {
+Widget GardenPage(BuildContext context, String uid) {
   user.plants = plants;
+  DatabaseReference userref = FirebaseDatabase(
+      databaseURL: 'https://gratitude-garden-83e02-default-rtdb.firebaseio.com/')
+      .reference()
+      .child('Users')
+      .child(uid)
+      .child('plants');
 
   // Builder widgets
   Widget _BuildPlantButton(List<Plant> plants, int index) {
     if (index >= plants.length) {
-
       return SizedBox(
         width: 100,
         height: 250,
@@ -1020,8 +1119,10 @@ Widget GardenPage(BuildContext context) {
     }
   }
 
-  Column _BuildPlantColumn(String label, int index1, int index2, int index3) {
-    return Column(
+  Column _BuildPlantColumn(String label, Map<dynamic, dynamic> plant1,
+      Map<dynamic, dynamic> plant2, Map<dynamic, dynamic> plant3) {
+    return
+      Column(
       children: [
         Container(
           alignment: Alignment.centerLeft,
@@ -1038,9 +1139,9 @@ Widget GardenPage(BuildContext context) {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _BuildPlantButton(user.plants, index1),
-              _BuildPlantButton(user.plants, index2),
-              _BuildPlantButton(user.plants, index3),
+              //_BuildPlantButton(user.plants, plant1),
+              //_BuildPlantButton(user.plants, plant2),
+              //_BuildPlantButton(user.plants, plant3),
             ],
           ),
           height: 88,
@@ -1057,16 +1158,28 @@ Widget GardenPage(BuildContext context) {
     );
   }
 
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      _BuildPlantColumn('Plants 1-3', 0, 1, 2),
-      _BuildPlantColumn('Plants 4-6', 3, 4, 5),
-      _BuildPlantColumn('Plants 7-9', 6, 7, 8),
-      _BuildPlantColumn('El Big Boi\'s', 9, 10, 11),
-    ],
-  );
+  return StreamBuilder(
+        stream: userref.onValue,
+        builder: (_context, AsyncSnapshot<Event> snapshot) {
+          if (snapshot.hasData) {
+            debugPrint('has data2');
+            DataSnapshot dataValues = snapshot.data.snapshot;
+            Map<dynamic, dynamic> values = dataValues.value;
+            debugPrint(values.toString());
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                //_BuildPlantColumn('Plants 1-3', 0, 1, 2),
+                //_BuildPlantColumn('Plants 4-6', 3, 4, 5),
+                //_BuildPlantColumn('Plants 7-9', 6, 7, 8),
+                //_BuildPlantColumn('El Big Boi\'s', 9, 10, 11),
+              ],
+            );
+          }
+          return LinearProgressIndicator();
+        }
+    );
 }
 
 Widget FriendsPage() {
@@ -1191,15 +1304,14 @@ class MyAccountSettings extends StatefulWidget {
 
 class _MyAccountSettingsState extends State<MyAccountSettings> {
   TextStyle style = TextStyle(color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 16);
-  //File _image;
   final imagePicker = ImagePicker();
   Future getImage() async {
     final pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
 
+    if (pickedFile != null) {
+      FirebaseAuth.instance.currentUser.updateProfile(photoURL: pickedFile.path).then((result) => setState);
+    }
     setState(() {
-      if (pickedFile != null) {
-        //user.profilePicture = pickedFile;
-      }
     });
   }
 
@@ -1226,42 +1338,46 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                     height: 100,
                     child: user.profilePicture == ''
                         ? CircleAvatar(
-                            child: Text(user.name[0]),
-                          )
+                      child: Text(user.name[0]),
+                    )
                         : CircleAvatar(
-                            backgroundImage: AssetImage(user.profilePicture),
-                          ),
+                      backgroundImage: AssetImage(user.profilePicture),
+                    ),
+                    //Image.file(File(FirebaseAuth.instance.currentUser.photoURL)),
                   ),
                   TextButton(
                     child: Text(
                       'Change Profile Picture',
                       style: style,
                     ),
-                    //onPressed: getImage,
-                    onPressed: () {
-                      user.profilePicture = user.profilePicture == '' ? 'images/spiderman.png' : '';
-                      setState(() {});
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Name', style: style),
-                  Text(user.name, style: style),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Email', style: style),
-                  Text(user.email, style: style),
-                ],
-              ),
-              SizedBox(height: 20),
+                    // onPressed: () {
+                    //   getImage().then((value) =>
+                    //       Navigator.push(context, MaterialPageRoute(builder: (context) => MyAccountSettings())).then((value) => setState));
+                    // },
+                      onPressed: () {
+                        user.profilePicture = user.profilePicture == '' ? 'images/spiderman.png' : '';
+                        setState(() {});
+                      },
+                      ),
+                      ],
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                      Text('Name', style: style),
+                      Text(user.name, style: style),
+                      ],
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                      Text('Email', style: style),
+                      Text(user.email, style: style),
+                      ],
+                      ),
+                      SizedBox(height: 20),
               Container(
                 child: Text('Password', style: style),
                 padding: EdgeInsets.only(bottom: 10),
