@@ -229,6 +229,7 @@ class _createAccountState extends State<createAccount> {
         },
         'friends': ['friend_uid'],
         'privacy': 0,
+        'avatar': 'none',
       });
       debugPrint('push');
       Navigator.pushReplacement(

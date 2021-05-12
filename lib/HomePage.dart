@@ -45,25 +45,23 @@ class _HomePageState extends State<HomePage> {
                       if (snapshot.hasData) {
                         debugPrint('has data2');
                         DataSnapshot dataValues = snapshot.data.snapshot;
-                        Map<dynamic, dynamic> values = dataValues.value;
-                        debugPrint(values.toString());
+                        Map<dynamic, dynamic> userValues = dataValues.value;
+                        debugPrint(userValues.toString());
                         return Row(
                           children: [
                             Container(
                               width: 45,
                               height: 45,
-                              child: user.profilePicture == ''
-                                  ? CircleAvatar(
-                                child: Text(values['name'].toString()[0]),
-                              )
-                                  : CircleAvatar(
-                                backgroundImage: AssetImage(user.profilePicture),
+                              child:CircleAvatar(
+                                child: userValues['avatar'] == 'none'
+                                  ? Text(userValues['name'].toString()[0])
+                                  : Text(userValues['avatar'],),
                               ),
                             ),
                             SizedBox(
                               width: 10,
                             ),
-                            Text(values['name'],
+                            Text(userValues['name'],
                               style: TextStyle(fontSize: 16),
                             ),
                           ],
@@ -98,7 +96,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 TextButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => MyAccountSettings())).then((value) => setState(() {}));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => MyAccountSettings(uid: uid))).then((value) => setState(() {}));
                   },
                   child: Container(
                     padding: EdgeInsets.only(left: 10, top: 12, right: 10, bottom: 12),
@@ -113,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacySettings()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacySettings(uid: uid)));
                   },
                   child: Container(
                     padding: EdgeInsets.only(left: 10, top: 12, right: 10, bottom: 12),
@@ -128,7 +126,6 @@ class _HomePageState extends State<HomePage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    debugPrint('sign out');
                     signOutUser();
                     Navigator.popUntil(context, ModalRoute.withName('/'));
                   },
