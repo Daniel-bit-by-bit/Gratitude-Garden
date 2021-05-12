@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:gratitude_garden/main.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class ViewGratitude extends StatefulWidget {
+  ViewGratitude({this.gratitude, this.plantImage});
+  final String gratitude;
+  final String plantImage;
   @override
-  _ViewGratitudeState createState() => _ViewGratitudeState();
+  _ViewGratitudeState createState() => _ViewGratitudeState(gratitude: gratitude, plantImage: plantImage);
 }
 
 class _ViewGratitudeState extends State<ViewGratitude> {
+  _ViewGratitudeState({this.gratitude, this.plantImage});
+  final String gratitude;
+  final String plantImage;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +29,7 @@ class _ViewGratitudeState extends State<ViewGratitude> {
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 image: DecorationImage(
-                  image: AssetImage('images/plant01.png'),
+                  image: AssetImage(plantImage),
                   fit: BoxFit.fitHeight,
                 ),
               ),
@@ -48,7 +56,7 @@ class _ViewGratitudeState extends State<ViewGratitude> {
                                     isAlwaysShown: true,
                                     child: SingleChildScrollView(
                                       padding: EdgeInsets.only(right: 15),
-                                      child: Text(user.plants[0].PrintGratitude(), style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
+                                      child: Text(gratitude, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
                                     ),
                                   ))),
                         ],

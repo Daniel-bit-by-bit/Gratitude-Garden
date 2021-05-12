@@ -43,19 +43,20 @@ class _HomePageState extends State<HomePage> {
                     stream: userref.onValue,
                     builder: (_context, AsyncSnapshot<Event> snapshot) {
                       if (snapshot.hasData) {
-                        debugPrint('has data2');
                         DataSnapshot dataValues = snapshot.data.snapshot;
                         Map<dynamic, dynamic> userValues = dataValues.value;
-                        debugPrint(userValues.toString());
                         return Row(
                           children: [
                             Container(
                               width: 45,
                               height: 45,
-                              child:CircleAvatar(
-                                child: userValues['avatar'] == 'none'
-                                  ? Text(userValues['name'].toString()[0])
-                                  : Text(userValues['avatar'],),
+                              child: CircleAvatar(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: userValues['avatar'] == 'none'
+                                    ? Text(userValues['name'].toString()[0])
+                                    : Text(userValues['avatar'],),
+                                ),
                               ),
                             ),
                             SizedBox(
@@ -185,7 +186,7 @@ Widget GardenPage(BuildContext context, String uid) {
       .child('plants');
 
   // Builder widgets
-  Widget _BuildPlantButton(Map<dynamic, dynamic> plant) {
+  Widget _BuildPlantButton(Map<dynamic, dynamic> plant, int index) {
     String path = 'images/' +'${plant['type']}' + '-' + '${plant['level']}' + '.png';
     if (path == '' || path == 'images/none-0.png') {
       return SizedBox(
@@ -206,14 +207,14 @@ Widget GardenPage(BuildContext context, String uid) {
           ),
         ),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => PlantPressed(plant: plant)));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => PlantPressed(index: index, plant: plant, uid: uid)));
         },
       );
     }
   }
 
   Column _BuildPlantColumn(String label, Map<dynamic, dynamic> plant1,
-      Map<dynamic, dynamic> plant2, Map<dynamic, dynamic> plant3) {
+      Map<dynamic, dynamic> plant2, Map<dynamic, dynamic> plant3, int index) {
     return
       Column(
         children: [
@@ -232,9 +233,9 @@ Widget GardenPage(BuildContext context, String uid) {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _BuildPlantButton(plant1),
-                _BuildPlantButton(plant2),
-                _BuildPlantButton(plant3),
+                _BuildPlantButton(plant1, index),
+                _BuildPlantButton(plant2, index + 1),
+                _BuildPlantButton(plant3, index + 2),
               ],
             ),
             height: 88,
@@ -263,10 +264,10 @@ Widget GardenPage(BuildContext context, String uid) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _BuildPlantColumn('Plants 1-3', values['plant1'], values['plant2'], values['plant3']),
-              _BuildPlantColumn('Plants 4-6', values['plant4'], values['plant5'], values['plant6']),
-              _BuildPlantColumn('Plants 7-9', values['plant7'], values['plant8'], values['plant9']),
-              _BuildPlantColumn('El Big Boi\'s', values['plant10'], values['plant11'], values['plant12']),
+              _BuildPlantColumn('Plants 1-3', values['plant1'], values['plant2'], values['plant3'], 1),
+              _BuildPlantColumn('Plants 4-6', values['plant4'], values['plant5'], values['plant6'], 4),
+              _BuildPlantColumn('Plants 7-9', values['plant7'], values['plant8'], values['plant9'], 7),
+              _BuildPlantColumn('El Big Boi\'s', values['plant10'], values['plant11'], values['plant12'], 10),
             ],
           );
         }

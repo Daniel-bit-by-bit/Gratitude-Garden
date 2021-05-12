@@ -15,7 +15,7 @@ class _AvatarGalleryState extends State<AvatarGallery> {
   List<String> avatars = ['Panda', 'Gorilla', 'Zebra', 'Lion', 'Sloth', 'Viper', 'Eagle',
     'Giraffe', 'Cat', 'Dog', 'Mouse', 'Chicken', 'Skunk', 'Dolphin', 'Shark', 'Octopus',
     'Dragon', 'Fox', 'Otter', 'Ferret', 'Deer', 'Rhino', 'Elephant', 'Cheetah', 'Leopard',
-    'Tiger', 'Moose', 'Goose', 'Whale', 'Crab', 'Lobster', 'Falcon', 'Hedgehog', 'Robot'
+    'Tiger', 'Moose', 'Goose', 'Whale', 'Crab', 'Lobster', 'Falcon', 'Hedgehog', 'Robot',
     'Penguin', 'Polar Bear'];
 
   List<Widget> buildList(List<String> avatars) {

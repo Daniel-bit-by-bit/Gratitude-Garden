@@ -1,63 +1,95 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 // dart
 import 'package:gratitude_garden/MyAccountSettings.dart';
 import 'package:gratitude_garden/PrivacySettings.dart';
+import 'package:gratitude_garden/ViewGratitude.dart';
 import 'package:gratitude_garden/main.dart';
 
 class AddGratitude extends StatefulWidget {
+  AddGratitude({this.uid, this.index, this.plant});
+  final String uid;
+  final int index;
+  final Map<dynamic, dynamic> plant;
   @override
-  _AddGratitudeState createState() => _AddGratitudeState();
+  _AddGratitudeState createState() => _AddGratitudeState(uid: uid, index: index, plant: plant);
 }
 
 class _AddGratitudeState extends State<AddGratitude> {
+  _AddGratitudeState({this.uid, this.index, this.plant});
+  final String uid;
+  final int index;
+  final Map<dynamic, dynamic> plant;
+  final _formKey = GlobalKey<FormState>();
   final gratitudeController = TextEditingController();
+  String gratitudeList = '';
 
   @override
   Widget build(BuildContext context) {
+    DatabaseReference userref = FirebaseDatabase(
+        databaseURL: 'https://gratitude-garden-83e02-default-rtdb.firebaseio.com/')
+        .reference()
+        .child('Users')
+        .child(uid);
+
+    String path = 'images/' +'${plant['type']}' + '-' + '${plant['level']}' + '.png';
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 45,
-                    height: 45,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: AssetImage('images/spiderman.png'),
-                          fit: BoxFit.cover,
-                        )),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'Peter Parker',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text(
-                    'Gratitude Garden',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                ],
-              ),
-            ],
-          ),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                StreamBuilder(
+                    stream: userref.onValue,
+                    builder: (_context, AsyncSnapshot<Event> snapshot) {
+                      if (snapshot.hasData) {
+                        DataSnapshot dataValues = snapshot.data.snapshot;
+                        Map<dynamic, dynamic> userValues = dataValues.value;
+                        return Row(
+                          children: [
+                            Container(
+                              width: 45,
+                              height: 45,
+                              child: CircleAvatar(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: userValues['avatar'] == 'none'
+                                      ? Text(userValues['name'].toString()[0])
+                                      : Text(userValues['avatar'],),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(userValues['name'],
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        );
+                      }
+                      return LinearProgressIndicator();
+                    }
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Gratitude Garden',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                  ],
+                ),
+              ],
+            )
         ),
         endDrawer: Drawer(
           child: Scaffold(
@@ -71,7 +103,7 @@ class _AddGratitudeState extends State<AddGratitude> {
               children: [
                 TextButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => MyAccountSettings())).then((value) => setState(() {}));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => MyAccountSettings(uid: uid))).then((value) => setState(() {}));
                   },
                   child: Container(
                     padding: EdgeInsets.only(left: 10, top: 12, right: 10, bottom: 12),
@@ -86,7 +118,7 @@ class _AddGratitudeState extends State<AddGratitude> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacySettings()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacySettings(uid: uid)));
                   },
                   child: Container(
                     padding: EdgeInsets.only(left: 10, top: 12, right: 10, bottom: 12),
@@ -101,7 +133,6 @@ class _AddGratitudeState extends State<AddGratitude> {
                 ),
                 TextButton(
                   onPressed: () {
-                    debugPrint('sign out');
                     signOutUser();
                     Navigator.popUntil(context, ModalRoute.withName('/'));
                   },
@@ -120,27 +151,99 @@ class _AddGratitudeState extends State<AddGratitude> {
             ),
           ),
         ),
-        body: Column(
-          children: <Widget>[
-            Card(
-              color: Colors.white,
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: gratitudeController,
-                  maxLines: 8,
-                  decoration: InputDecoration.collapsed(hintText: "Enter gratitude here"),
-                ),
-              ),
-            ),
-            ElevatedButton(
-              child: Text('Submit'),
-              onPressed: () {
-                user.plants[0].AddGratitude(gratitudeController.text);
-                Navigator.pushReplacementNamed(context, '/view_gratitude');
-              },
-            ),
-          ],
+        body: SingleChildScrollView(
+          child: StreamBuilder(
+            stream: userref.child('plants/plant$index').onValue,
+            builder: (_context, AsyncSnapshot<Event> snapshot) {
+              if (snapshot.hasData) {
+                DataSnapshot dataValues = snapshot.data.snapshot;
+                debugPrint('___' + dataValues.value.toString());
+                Map<dynamic, dynamic> plantValues = dataValues.value;
+                return Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(left: 50, bottom: 10, top: 5),
+                          width: 100,
+                          height: 100,
+                          alignment: Alignment.centerLeft,
+                          child: Image(image: AssetImage(path)),
+                        ),
+                      ],
+                    ),
+                    Card(
+                      color: Colors.blue,
+                      margin: EdgeInsets.symmetric(horizontal: 5),
+                      child: Column(
+                        children: [
+                          Card(
+                            margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+                            color: Colors.white,
+                            child: Padding(
+                              padding: EdgeInsets.all(16),
+                              child: Form(
+                                key: _formKey,
+                                child: TextFormField(
+                                  maxLength: 100,
+                                  controller: gratitudeController,
+                                  maxLines: 6,
+                                  decoration: InputDecoration.collapsed(hintText: "Enter gratitude here"),
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Enter gratitude';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              RawMaterialButton(
+                                child: Text('Cancel', style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w500)),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              SizedBox(width: 5,),
+                              RawMaterialButton(
+                                child: Text('Submit', style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w500)),
+                                fillColor: Colors.lightBlueAccent,
+                                onPressed: () {
+                                  if(_formKey.currentState.validate()) {
+                                    setState(() {
+                                      gratitudeList = plantValues['gratitude'];
+                                      debugPrint('=======' + gratitudeList.toString());
+                                      if(gratitudeList == 'none' || gratitudeList == null) {
+                                        gratitudeList = '';
+                                      }
+                                      gratitudeList += gratitudeController.text + '\n\n';
+                                      userref.child('plants').child('plant$index').child('gratitude').set(gratitudeList).then((value)  {
+                                        Navigator.pop(context);
+                                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ViewGratitude(gratitude: gratitudeList, plantImage: path)))
+                                          .then((value) => setState);
+                                      });
+                                    });
+
+                                  }
+                                },
+                              ),
+                              SizedBox(width: 10,),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }
+              return LinearProgressIndicator();
+            }
+          ),
         ),
       ),
     );

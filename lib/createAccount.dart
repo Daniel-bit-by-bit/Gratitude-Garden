@@ -169,7 +169,7 @@ class _createAccountState extends State<createAccount> {
           'plant1': {
             'type': 'plant1',
             'level': '1',
-            'gratitude': []
+            'gratitude': 'none'
           },
           'plant2': {
             'type': 'none',

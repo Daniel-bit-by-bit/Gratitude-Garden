@@ -54,9 +54,12 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                             width: 100,
                             height: 100,
                               child: CircleAvatar(
-                                child: userValues['avatar'] == 'none'
-                                  ? Text(userValues['name'].toString()[0], style: TextStyle(fontSize: 32),)
-                                  : Text(userValues['avatar']),
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: userValues['avatar'] == 'none'
+                                      ? Text(userValues['name'].toString()[0], style: TextStyle(fontSize: 32),)
+                                      : Text(userValues['avatar'],),
+                                ),
                               )
                           ),
                           TextButton(
