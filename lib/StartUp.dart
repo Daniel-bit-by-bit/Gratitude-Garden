@@ -39,14 +39,6 @@ class StartUp extends StatelessWidget {
                 Navigator.pushNamed(context, '/create_account');
               },
             ),
-            RawMaterialButton(
-              fillColor: Colors.red,
-              padding: EdgeInsets.all(12),
-              child: Text('Enter the Database'),
-              onPressed: () {
-                Navigator.pushNamed(context, '/database_test');
-              },
-            ),
           ],
         ),
       ),

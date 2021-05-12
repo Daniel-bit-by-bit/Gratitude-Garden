@@ -32,6 +32,7 @@ class _HomePageState extends State<HomePage> {
     List<Widget> pages = <Widget>[GardenPage(context, uid), FriendsPage()];
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'My Garden',
       home: Scaffold(
         appBar: AppBar(
@@ -284,110 +285,48 @@ Widget FriendsPage() {
     appBar: AppBar(
       backgroundColor: Colors.white,
       title: Text(
-        'Friends List',
+        'Friends',
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.blue),
       ),
     ),
     body: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          '     Online',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.blue),
+        TextButton(
+          onPressed: () {
+            //Navigator.push(context, MaterialPageRoute(builder: (context) => AddFriends())).then((value)) => setState(() {}));
+              },
+          child: Container(
+            padding: EdgeInsets.only(left: 10, top: 12, right: 10, bottom: 12),
+            child: Row(
+              children: [
+                Icon(Icons.group_add_outlined),
+                SizedBox(width: 16,),
+                Text('Add Friends'),
+                Icon(Icons.arrow_forward_ios_rounded),
+                SizedBox(width: 20,)
+              ],
+             ),
+            ),
+           ),
+
+        TextButton(
+          onPressed: () {
+            //Navigator.push(context, MaterialPageRoute(builder: (context) => AddFriends())).then((value)) => setState(() {}));
+          },
+          child: Container(
+            padding: EdgeInsets.only(left: 10, top: 12, right: 10, bottom: 12),
+            child: Row(
+              children: [
+                Icon(Icons.group_rounded),
+                SizedBox(width: 5,),
+                Text('My Friends'),
+                Icon(Icons.arrow_forward_ios_rounded),
+                SizedBox(width: 5,)
+           ],
+          ),
+         ),
         ),
-        Row(
-          children: [
-            Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: AssetImage('images/GwenStacy.jpg'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(
-              'Gwen Stacy',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.blue),
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: AssetImage('images/HarryOsborn.jpg'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(
-              'Harry Osborn',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.blue),
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: AssetImage('images/MaryJane.jpg'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(
-              'Mary Jane',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.blue),
-            ),
-          ],
-        ),
-        Text(
-          '     Offline',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.blue),
-        ),
-        Row(
-          children: [
-            Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: AssetImage('images/TonyStarks.jpg'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(
-              'Tony Starks',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.blue),
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
+       ],
+      ),
+    );
 }

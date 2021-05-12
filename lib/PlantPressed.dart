@@ -23,6 +23,7 @@ class _PlantPressedState extends State<PlantPressed> {
   Widget build(BuildContext context) {
     String path = 'images/' +'${plant['type']}' + '-' + '${plant['level']}' + '.png';
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: Row(

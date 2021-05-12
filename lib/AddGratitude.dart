@@ -18,6 +18,7 @@ class _AddGratitudeState extends State<AddGratitude> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: Row(

@@ -21,10 +21,12 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flappy_search_bar: 1.4.1
   #search_widget: <latest version>
   flutter:
     sdk: flutter
   image_picker: ^0.7.4
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
