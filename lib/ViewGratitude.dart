@@ -53,7 +53,6 @@ class _ViewGratitudeState extends State<ViewGratitude> {
                                   color: Colors.white,
                                   padding: EdgeInsets.only(top: 20, bottom: 20, left: 20, right: 10),
                                   child: Scrollbar(
-                                    isAlwaysShown: true,
                                     child: SingleChildScrollView(
                                       padding: EdgeInsets.only(right: 15),
                                       child: Text(gratitude, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),

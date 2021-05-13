@@ -39,50 +39,58 @@ class _PlantPressedState extends State<PlantPressed> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                StreamBuilder(
-                    stream: userref.onValue,
-                    builder: (_context, AsyncSnapshot<Event> snapshot) {
-                      if (snapshot.hasData) {
-                        DataSnapshot dataValues = snapshot.data.snapshot;
-                        Map<dynamic, dynamic> userValues = dataValues.value;
-                        return Row(
-                          children: [
-                            Container(
-                              width: 45,
-                              height: 45,
-                              child: CircleAvatar(
-                                child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: userValues['avatar'] == 'none'
-                                      ? Text(userValues['name'].toString()[0])
-                                      : Text(userValues['avatar'],),
+                Container(
+                  width: 205,
+                  child: StreamBuilder(
+                      stream: userref.onValue,
+                      builder: (_context, AsyncSnapshot<Event> snapshot) {
+                        if (snapshot.hasData) {
+                          DataSnapshot dataValues = snapshot.data.snapshot;
+                          Map<dynamic, dynamic> userValues = dataValues.value;
+                          return Row(
+                            children: [
+                              Container(
+                                width: 45,
+                                height: 45,
+                                child: CircleAvatar(
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: userValues['avatar'] == 'none'
+                                        ? Text(userValues['name'].toString()[0])
+                                        : Text(userValues['avatar'],),
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(userValues['name'],
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        );
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                width: 145,
+                                child: FittedBox(
+                                  alignment: Alignment.centerLeft,
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(userValues['name'],
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+                        return LinearProgressIndicator();
                       }
-                      return LinearProgressIndicator();
-                    }
+                  ),
                 ),
                 Row(
                   children: [
                     Text(
                       'Gratitude Garden',
                       style: TextStyle(fontSize: 16),
-                    ),
-                    SizedBox(
-                      width: 10,
                     ),
                   ],
                 ),
@@ -149,80 +157,93 @@ class _PlantPressedState extends State<PlantPressed> {
             ),
           ),
         ),
-        body: Container(
-          width: 400,
-          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            SizedBox(height: 40),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Align(alignment: Alignment.topCenter),
-                Container(
-                  height: 200,
-                  width: 200,
-                  child: Image(image: AssetImage(path)),
-                ),
-              ], //children-inner
-            ), //row1
-            SizedBox(height: 20),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Card(
-                color: Colors.blue,
-                child: Container(
-                  margin: EdgeInsets.all(2),
-                    padding: EdgeInsets.only(top: 10, bottom: 10),
-                    height: 180,
-                    width: 220,
+        body: Column(
+          children: [
+            Container(
+              alignment: Alignment.centerLeft,
+              child: RawMaterialButton(
+                  child: Container(
+                    width: 60,
+                    child: Icon(Icons.arrow_back),
+                    alignment: Alignment.centerLeft,),
+                  onPressed: () => Navigator.pop(context)),
+            ),
+            Container(
+              width: 400,
+              child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                SizedBox(height: 40),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Align(alignment: Alignment.topCenter),
+                    Container(
+                      height: 200,
+                      width: 200,
+                      child: Image(image: AssetImage(path)),
+                    ),
+                  ], //children-inner
+                ), //row1
+                SizedBox(height: 20),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Card(
                     color: Colors.blue,
-                    child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                      Container(
-                          width: 190,
-                          height: 40,
-                          color: Colors.lightBlueAccent,
-                          child: TextButton(
-                              child: Text('Feed Gratitude', style: TextStyle(fontSize: 16, color: Colors.white)),
-                              onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => AddGratitude(uid: uid, index: index, plant: plant)));
-                              })),
-                      Container(
-                          width: 190,
-                          height: 40,
-                          color: Colors.lightBlueAccent,
-                          child: TextButton(
-                              child: Text('View Gratitude', style: TextStyle(fontSize: 16, color: Colors.white)),
-                              onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => ViewGratitude(gratitude: plant['gratitude'], plantImage: path)));
-                              })),
-                      Container(
-                          width: 190,
-                          height: 40,
-                          color: Colors.lightBlueAccent,
-                          child: TextButton(
-                              child: Text('Send a Plant', style: TextStyle(fontSize: 16, color: Colors.white)),
-                              onPressed: () {
-                                //Navigator.pushNamed(context, '/send_a_plant');
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                          title: Text('Error'),
-                                          content: Text('Function not implemented.'),
-                                          actions: [
-                                            TextButton(
-                                                child: Text('Ok'),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                }
-                                            )
-                                          ]
-                                      );
-                                    });
-                              })),
-                    ]) //children
-                ),
-              ),
-            ])
-          ]),
+                    child: Container(
+                      margin: EdgeInsets.all(2),
+                        padding: EdgeInsets.only(top: 10, bottom: 10),
+                        height: 180,
+                        width: 220,
+                        color: Colors.blue,
+                        child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                          Container(
+                              width: 190,
+                              height: 40,
+                              color: Colors.lightBlueAccent,
+                              child: TextButton(
+                                  child: Text('Feed Gratitude', style: TextStyle(fontSize: 16, color: Colors.white)),
+                                  onPressed: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddGratitude(uid: uid, index: index, plant: plant)));
+                                  })),
+                          Container(
+                              width: 190,
+                              height: 40,
+                              color: Colors.lightBlueAccent,
+                              child: TextButton(
+                                  child: Text('View Gratitude', style: TextStyle(fontSize: 16, color: Colors.white)),
+                                  onPressed: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => ViewGratitude(gratitude: plant['gratitude'], plantImage: path)));
+                                  })),
+                          Container(
+                              width: 190,
+                              height: 40,
+                              color: Colors.lightBlueAccent,
+                              child: TextButton(
+                                  child: Text('Send a Plant', style: TextStyle(fontSize: 16, color: Colors.white)),
+                                  onPressed: () {
+                                    //Navigator.pushNamed(context, '/send_a_plant');
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                              title: Text('Error'),
+                                              content: Text('Function not implemented.'),
+                                              actions: [
+                                                TextButton(
+                                                    child: Text('Ok'),
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                    }
+                                                )
+                                              ]
+                                          );
+                                        });
+                                  })),
+                        ]) //children
+                    ),
+                  ),
+                ])
+              ]),
+            ),
+          ],
         ), //children-outer
       ),
     );

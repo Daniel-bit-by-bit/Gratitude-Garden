@@ -39,46 +39,53 @@ class _HomePageState extends State<HomePage> {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                StreamBuilder(
-                    stream: userref.onValue,
-                    builder: (_context, AsyncSnapshot<Event> snapshot) {
-                      if (snapshot.hasData) {
-                        DataSnapshot dataValues = snapshot.data.snapshot;
-                        Map<dynamic, dynamic> userValues = dataValues.value;
-                        return Row(
-                          children: [
-                            Container(
-                              width: 45,
-                              height: 45,
-                              child: CircleAvatar(
-                                child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: userValues['avatar'] == 'none'
-                                    ? Text(userValues['name'].toString()[0])
-                                    : Text(userValues['avatar'],),
+                Container(
+                  width: 205,
+                  child: StreamBuilder(
+                      stream: userref.onValue,
+                      builder: (_context, AsyncSnapshot<Event> snapshot) {
+                        if (snapshot.hasData) {
+                          DataSnapshot dataValues = snapshot.data.snapshot;
+                          Map<dynamic, dynamic> userValues = dataValues.value;
+                          return Row(
+                            children: [
+                              Container(
+                                width: 45,
+                                height: 45,
+                                child: CircleAvatar(
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: userValues['avatar'] == 'none'
+                                        ? Text(userValues['name'].toString()[0])
+                                        : Text(userValues['avatar'],),
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(userValues['name'],
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        );
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                width: 145,
+                                child: FittedBox(
+                                  alignment: Alignment.centerLeft,
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(userValues['name'],
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+                        return LinearProgressIndicator();
                       }
-                      return LinearProgressIndicator();
-                    }
+                  ),
                 ),
                 Row(
                   children: [
                     Text(
                       'Gratitude Garden',
                       style: TextStyle(fontSize: 16),
-                    ),
-                    SizedBox(
-                      width: 10,
                     ),
                   ],
                 ),
@@ -256,10 +263,8 @@ Widget GardenPage(BuildContext context, String uid) {
       stream: plantsref.onValue,
       builder: (_context, AsyncSnapshot<Event> snapshot) {
         if (snapshot.hasData) {
-          debugPrint('has data2');
           DataSnapshot dataValues = snapshot.data.snapshot;
           Map<dynamic, dynamic> values = dataValues.value;
-          debugPrint(values.toString());
           return Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
