@@ -221,7 +221,7 @@ class _PlantPressedState extends State<PlantPressed> {
                               child: TextButton(
                                   child: Text('Send a Plant', style: TextStyle(fontSize: 16, color: Colors.white)),
                                   onPressed: () {
-                                    //Navigator.pushNamed(context, '/send_a_plant');
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => confirmFriend(uid: uid)));
                                     showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
