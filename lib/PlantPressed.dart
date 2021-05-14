@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:gratitude_garden/confirmFriend.dart';
+
 // dart
 import 'package:gratitude_garden/MyAccountSettings.dart';
 import 'package:gratitude_garden/PrivacySettings.dart';
@@ -174,7 +176,7 @@ class _PlantPressedState extends State<PlantPressed> {
                         child: TextButton(
                             child: Text('Send a Plant', style: TextStyle(fontSize: 16, color: Colors.white)),
                             onPressed: () {
-                              //Navigator.pushNamed(context, '/send_a_plant');
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => confirmFriend()));
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
