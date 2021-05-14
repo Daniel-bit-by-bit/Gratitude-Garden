@@ -89,6 +89,7 @@ Widget buildFloatingSearchBar(BuildContext context) {
     debounceDelay: const Duration(milliseconds: 500),
     onQueryChanged: (query) {
       // Call your model, bloc, controller here.
+      
     },
     // Specify a custom transition to be used for
     // animating between opened and closed stated.
