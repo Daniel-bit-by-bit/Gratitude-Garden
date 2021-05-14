@@ -34,7 +34,7 @@ Future<void> main() async {
         '/sign_in': (context) => SignIn(),
         '/create_account': (context) => createAccount(),
         '/feed_gratitude': (context) => AddGratitude(),
-        '/view_gratitude': (context) => ViewGratitude(),
+        //'/view_gratitude': (context) => ViewGratitude(),
         //'/send_a_plant': (context) => SendAPlant(),
       },
     ),

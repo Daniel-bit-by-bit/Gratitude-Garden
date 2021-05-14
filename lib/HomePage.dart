@@ -42,47 +42,53 @@ class _HomePageState extends State<HomePage> {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                StreamBuilder(
-                    stream: userref.onValue,
-                    builder: (_context, AsyncSnapshot<Event> snapshot) {
-                      if (snapshot.hasData) {
-                        debugPrint('has data2');
-                        DataSnapshot dataValues = snapshot.data.snapshot;
-                        Map<dynamic, dynamic> values = dataValues.value;
-                        debugPrint(values.toString());
-                        return Row(
-                          children: [
-                            Container(
-                              width: 45,
-                              height: 45,
-                              child: user.profilePicture == ''
-                                  ? CircleAvatar(
-                                child: Text(values['name'].toString()[0]),
-                              )
-                                  : CircleAvatar(
-                                backgroundImage: AssetImage(user.profilePicture),
+                Container(
+                  width: 205,
+                  child: StreamBuilder(
+                      stream: userref.onValue,
+                      builder: (_context, AsyncSnapshot<Event> snapshot) {
+                        if (snapshot.hasData) {
+                          DataSnapshot dataValues = snapshot.data.snapshot;
+                          Map<dynamic, dynamic> userValues = dataValues.value;
+                          return Row(
+                            children: [
+                              Container(
+                                width: 45,
+                                height: 45,
+                                child: CircleAvatar(
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: userValues['avatar'] == 'none'
+                                        ? Text(userValues['name'].toString()[0])
+                                        : Text(userValues['avatar'],),
+                                  ),
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(values['name'],
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        );
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                width: 145,
+                                child: FittedBox(
+                                  alignment: Alignment.centerLeft,
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(userValues['name'],
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+                        return LinearProgressIndicator();
                       }
-                      return LinearProgressIndicator();
-                    }
+                  ),
                 ),
                 Row(
                   children: [
                     Text(
                       'Gratitude Garden',
                       style: TextStyle(fontSize: 16),
-                    ),
-                    SizedBox(
-                      width: 10,
                     ),
                   ],
                 ),
@@ -101,7 +107,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 TextButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => MyAccountSettings())).then((value) => setState(() {}));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => MyAccountSettings(uid: uid))).then((value) => setState(() {}));
                   },
                   child: Container(
                     padding: EdgeInsets.only(left: 10, top: 12, right: 10, bottom: 12),
@@ -116,7 +122,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacySettings()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacySettings(uid: uid)));
                   },
                   child: Container(
                     padding: EdgeInsets.only(left: 10, top: 12, right: 10, bottom: 12),
@@ -131,7 +137,6 @@ class _HomePageState extends State<HomePage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    debugPrint('sign out');
                     signOutUser();
                     Navigator.popUntil(context, ModalRoute.withName('/'));
                   },
@@ -191,7 +196,7 @@ Widget GardenPage(BuildContext context, String uid) {
       .child('plants');
 
   // Builder widgets
-  Widget _BuildPlantButton(Map<dynamic, dynamic> plant) {
+  Widget _BuildPlantButton(Map<dynamic, dynamic> plant, int index) {
     String path = 'images/' +'${plant['type']}' + '-' + '${plant['level']}' + '.png';
     if (path == '' || path == 'images/none-0.png') {
       return SizedBox(
@@ -212,14 +217,14 @@ Widget GardenPage(BuildContext context, String uid) {
           ),
         ),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => PlantPressed(plant: plant)));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => PlantPressed(index: index, plant: plant, uid: uid)));
         },
       );
     }
   }
 
   Column _BuildPlantColumn(String label, Map<dynamic, dynamic> plant1,
-      Map<dynamic, dynamic> plant2, Map<dynamic, dynamic> plant3) {
+      Map<dynamic, dynamic> plant2, Map<dynamic, dynamic> plant3, int index) {
     return
       Column(
         children: [
@@ -238,9 +243,9 @@ Widget GardenPage(BuildContext context, String uid) {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _BuildPlantButton(plant1),
-                _BuildPlantButton(plant2),
-                _BuildPlantButton(plant3),
+                _BuildPlantButton(plant1, index),
+                _BuildPlantButton(plant2, index + 1),
+                _BuildPlantButton(plant3, index + 2),
               ],
             ),
             height: 88,
@@ -261,18 +266,16 @@ Widget GardenPage(BuildContext context, String uid) {
       stream: plantsref.onValue,
       builder: (_context, AsyncSnapshot<Event> snapshot) {
         if (snapshot.hasData) {
-          debugPrint('has data2');
           DataSnapshot dataValues = snapshot.data.snapshot;
           Map<dynamic, dynamic> values = dataValues.value;
-          debugPrint(values.toString());
           return Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _BuildPlantColumn('Plants 1-3', values['plant1'], values['plant2'], values['plant3']),
-              _BuildPlantColumn('Plants 4-6', values['plant4'], values['plant5'], values['plant6']),
-              _BuildPlantColumn('Plants 7-9', values['plant7'], values['plant8'], values['plant9']),
-              _BuildPlantColumn('El Big Boi\'s', values['plant10'], values['plant11'], values['plant12']),
+              _BuildPlantColumn('Plants 1-3', values['plant1'], values['plant2'], values['plant3'], 1),
+              _BuildPlantColumn('Plants 4-6', values['plant4'], values['plant5'], values['plant6'], 4),
+              _BuildPlantColumn('Plants 7-9', values['plant7'], values['plant8'], values['plant9'], 7),
+              _BuildPlantColumn('El Big Boi\'s', values['plant10'], values['plant11'], values['plant12'], 10),
             ],
           );
         }
