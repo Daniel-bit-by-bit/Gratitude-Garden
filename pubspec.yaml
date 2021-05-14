@@ -21,7 +21,9 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  flappy_search_bar: 1.4.1
+  # flappy_search_bar: 1.4.1
+  # flappy_search_bar_fork: ^1.7.4
+  material_floating_search_bar: ^0.3.4
   #search_widget: <latest version>
   flutter:
     sdk: flutter

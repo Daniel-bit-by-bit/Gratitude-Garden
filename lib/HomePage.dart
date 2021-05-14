@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:path/path.dart';
 
 // dart
-import 'package:gratitude_garden/Plant.dart';
 import 'package:gratitude_garden/PlantPressed.dart';
 import 'package:gratitude_garden/MyAccountSettings.dart';
 import 'package:gratitude_garden/PrivacySettings.dart';
+import 'package:gratitude_garden/FriendsList.dart';
+import 'package:gratitude_garden/AddFriends.dart';
 import 'package:gratitude_garden/main.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,6 +17,7 @@ class HomePage extends StatefulWidget {
   final String uid;
   @override
   _HomePageState createState() => _HomePageState(uid: uid);
+
 }
 
 class _HomePageState extends State<HomePage> {
@@ -29,7 +32,7 @@ class _HomePageState extends State<HomePage> {
     DatabaseReference userref = FirebaseDatabase(
         databaseURL: 'https://gratitude-garden-83e02-default-rtdb.firebaseio.com/'
     ).reference().child('Users').child(uid);
-    List<Widget> pages = <Widget>[GardenPage(context, uid), FriendsPage()];
+    List<Widget> pages = <Widget>[GardenPage(context, uid), FriendsPage(context, uid)];
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -278,7 +281,7 @@ Widget GardenPage(BuildContext context, String uid) {
   );
 }
 
-Widget FriendsPage() {
+Widget FriendsPage(BuildContext context, String uid) {
   // Builder widgets
   return Scaffold(
     backgroundColor: Colors.white,
@@ -293,7 +296,7 @@ Widget FriendsPage() {
       children: [
         TextButton(
           onPressed: () {
-            //Navigator.push(context, MaterialPageRoute(builder: (context) => AddFriends())).then((value)) => setState(() {}));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AddFriends()));
               },
           child: Container(
             padding: EdgeInsets.only(left: 10, top: 12, right: 10, bottom: 12),
@@ -303,7 +306,7 @@ Widget FriendsPage() {
                 SizedBox(width: 16,),
                 Text('Add Friends'),
                 Icon(Icons.arrow_forward_ios_rounded),
-                SizedBox(width: 20,)
+                SizedBox(width: 5,)
               ],
              ),
             ),
@@ -311,14 +314,14 @@ Widget FriendsPage() {
 
         TextButton(
           onPressed: () {
-            //Navigator.push(context, MaterialPageRoute(builder: (context) => AddFriends())).then((value)) => setState(() {}));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => FriendsList()));
           },
           child: Container(
             padding: EdgeInsets.only(left: 10, top: 12, right: 10, bottom: 12),
             child: Row(
               children: [
                 Icon(Icons.group_rounded),
-                SizedBox(width: 5,),
+                SizedBox(width: 16,),
                 Text('My Friends'),
                 Icon(Icons.arrow_forward_ios_rounded),
                 SizedBox(width: 5,)

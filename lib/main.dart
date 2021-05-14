@@ -20,6 +20,7 @@ import 'package:gratitude_garden/createAccount.dart';
 import 'package:gratitude_garden/HomePage.dart';
 import 'package:gratitude_garden/MyAccountSettings.dart';
 import 'package:gratitude_garden/PrivacySettings.dart';
+import 'package:gratitude_garden/FriendsList.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
