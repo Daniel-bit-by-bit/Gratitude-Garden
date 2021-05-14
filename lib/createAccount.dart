@@ -168,67 +168,68 @@ class _createAccountState extends State<createAccount> {
         'plants': {
           'plant1': {
             'type': 'plant1',
-            'level': '1',
-            'gratitude': []
+            'level': 0,
+            'gratitude': 'none'
           },
           'plant2': {
             'type': 'none',
-            'level': '0',
+            'level': 0,
             'gratitude': []
           },
           'plant3': {
             'type': 'none',
-            'level': '0',
+            'level': 0,
             'gratitude': []
           },
           'plant4': {
             'type': 'none',
-            'level': '0',
+            'level': 0,
             'gratitude': []
           },
           'plant5': {
             'type': 'none',
-            'level': '0',
+            'level': 0,
             'gratitude': []
           },
           'plant6': {
             'type': 'none',
-            'level': '0',
+            'level': 0,
             'gratitude': []
           },
           'plant7': {
             'type': 'none',
-            'level': '0',
+            'level': 0,
             'gratitude': []
           },
           'plant8': {
             'type': 'none',
-            'level': '0',
+            'level': 0,
             'gratitude': []
           },
           'plant9': {
             'type': 'none',
-            'level': '0',
+            'level': 0,
             'gratitude': []
           },
           'plant10': {
             'type': 'none',
-            'level': '0',
+            'level': 0,
             'gratitude': []
           },
           'plant11': {
             'type': 'none',
-            'level': '0',
+            'level': 0,
             'gratitude': []
           },
           'plant12': {
             'type': 'none',
-            'level': '0',
+            'level': 0,
             'gratitude': []
           },
         },
         'friends': ['friend_uid'],
         'privacy': 0,
+        'avatar': 'none',
       });
       debugPrint('push');
       Navigator.pushReplacement(
